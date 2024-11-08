@@ -1,6 +1,6 @@
 import React from 'react';
 import {Text, View, Pressable, Image, FlatList, StyleSheet} from 'react-native';
-import star from "../images/star.png"
+import stara from '../images/star.png'
 
 const data1 =[
   {
@@ -8,30 +8,48 @@ const data1 =[
     image:"https://images.pexels.com/photos/1598508/pexels-photo-1598508.jpeg?auto=compress&cs=tinysrgb&w=600",
     title:"Shoe",
     price:"$299",
-    star:"../images/star.png"
   },
   {
     id:"2",
-    image:"https://images.pexels.com/photos/1598508/pexels-photo-1598508.jpeg?auto=compress&cs=tinysrgb&w=600",
+    image:"https://images.pexels.com/photos/2070069/pexels-photo-2070069.jpeg?auto=compress&cs=tinysrgb&w=600",
     title:"Tablet",
     price:"$499",
-    star:"../images/star.png"
   },
   {
     id:"3",
-    image:"https://images.pexels.com/photos/1598508/pexels-photo-1598508.jpeg?auto=compress&cs=tinysrgb&w=600",
+    image:"https://images.pexels.com/photos/5945906/pexels-photo-5945906.jpeg?auto=compress&cs=tinysrgb&w=600",
     title:"Pear",
     price:"$99",
-    star:"../images/star.png"
   },
   {
     id:"4",
-    image:"https://images.pexels.com/photos/1598508/pexels-photo-1598508.jpeg?auto=compress&cs=tinysrgb&w=600",
+    image:"https://images.pexels.com/photos/333984/pexels-photo-333984.jpeg?auto=compress&cs=tinysrgb&w=600",
     title:"Television",
     price:"$599",
-    star:"../images/star.png"
   }
 ]
+const data2 =[
+    {
+      id:"1",
+      image:"https://images.pexels.com/photos/356056/pexels-photo-356056.jpeg?auto=compress&cs=tinysrgb&w=600",
+      title:"Electronics",
+    },
+    {
+      id:"2",
+      image:"https://images.pexels.com/photos/19090/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=600",
+      title:"Fashion",
+    },
+    {
+      id:"3",
+      image:"https://images.pexels.com/photos/1377034/pexels-photo-1377034.jpeg?auto=compress&cs=tinysrgb&w=600",
+      title:"Beauty",
+    },
+    {
+      id:"4",
+      image:"https://images.pexels.com/photos/708777/pexels-photo-708777.jpeg?auto=compress&cs=tinysrgb&w=600",
+      title:"Fresh fruit",
+    }
+  ]
 
 export default function Home_ProductListing (){
     const renderItem = ({item})=>(
@@ -40,13 +58,37 @@ export default function Home_ProductListing (){
                 <View style={{flex:6, justifyContent:"center", alignItems:"center"}}>
                     <Image
                         source={{uri:item.image}}
-                        style={{width:80,}}
+                        style={{width:70, height:70}}
                     />
                 </View>
-                <View style={{flex:2}}></View>
-                <View style={{flex:2}}></View>
+                <View style={{flex:2, justifyContent:"center", marginLeft:20}}>
+                    <Text>
+                        {item.title}
+                    </Text>
+                </View>
+                <View style={{flex:2, flexDirection:"row", alignItems:"center"}}>
+                    <Image
+                        source={require("../images/star.png")}
+                        style={{width:20, height:20, marginLeft:20}}
+                    />
+                    <Text style={{fontSize:13, marginLeft:5}}>
+                        4.5
+                    </Text>
+                    <Text style={styles.price}>
+                        {item.price}
+                    </Text>
+                </View>
             </View>
         </Pressable>
+    )
+    const renderHItem = ({item})=>(
+        <Pressable style={styles.pres} >
+            <Image
+                source={{uri:item.image}}
+                style={{ width: 80, height: 80, borderRadius:40 }}
+            />
+            <Text style={{marginTop:5}}>{item.title}</Text>
+            </Pressable>
     )
   return(
     <View style={{flex: 1, height:800, marginTop:50}}>
@@ -79,35 +121,13 @@ export default function Home_ProductListing (){
             style={{marginLeft:30,width:27, height:27}}
           />
         </View>
-        <View style={{flex: 4, alignItems:"center", flexDirection:"row"}}>
-            <Pressable style={styles.pres} >
-            <Image
-                source={{ uri: "https://images.pexels.com/photos/356056/pexels-photo-356056.jpeg?auto=compress&cs=tinysrgb&w=600" }}
-                style={{ width: 80, height: 80, borderRadius:40 }}
+        <View style={{flex: 4, alignItems:"center"}}>
+        <FlatList 
+                data={data2}
+                keyExtractor={item => item.id}
+                renderItem={renderHItem}
+                horizontal
             />
-            <Text style={{marginTop:5}}>Electronics</Text>
-            </Pressable>
-            <Pressable style={styles.pres} >
-            <Image
-                source={{ uri: "https://images.pexels.com/photos/19090/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=600" }}
-                style={{ width: 80, height: 80, borderRadius:40 }}
-            />
-            <Text style={{marginTop:5}}>Fashion</Text>
-            </Pressable>
-            <Pressable style={styles.pres} >
-            <Image
-                source={{ uri: "https://images.pexels.com/photos/1377034/pexels-photo-1377034.jpeg?auto=compress&cs=tinysrgb&w=600" }}
-                style={{ width: 80, height: 80, borderRadius:40 }}
-            />
-            <Text style={{marginTop:5}}>Beauty</Text>
-            </Pressable>
-            <Pressable style={styles.pres} >
-            <Image
-                source={{ uri: "https://images.pexels.com/photos/708777/pexels-photo-708777.jpeg?auto=compress&cs=tinysrgb&w=600" }}
-                style={{ width: 80, height: 80, borderRadius:40 }}
-            />
-            <Text style={{marginTop:5}}>Fresh fruit</Text>
-            </Pressable>
         </View>
         <View style={styles.view}>
             <View style={styles.view1}>
@@ -140,8 +160,13 @@ export default function Home_ProductListing (){
             <Text style={styles.viewall}>View all</Text>
             
         </View>
-        <View style={{flex: 4}}>
-        
+        <View style={{flex: 5}}>
+            <FlatList 
+                data={data1}
+                keyExtractor={item => item.id}
+                renderItem={renderItem}
+                horizontal
+            />
         </View>
         <View style={{flex: 2, flexDirection:"row", justifyContent:"space-between", marginLeft:10, marginRight:10, borderTopWidth:2, borderColor:"#958F8F"}}>
             <Pressable>
@@ -253,9 +278,14 @@ const styles = StyleSheet.create({
     },
     item:{
         flex:1,
-        width:80,
-        height:120,
+        width:130,
+        height:150,
         margin:8,
         backgroundColor:"#F8F7F7"
+    },
+    price:{
+       color:"#11D5EB",
+       marginLeft:20,
+       fontWeight:"700"
     }
 });
