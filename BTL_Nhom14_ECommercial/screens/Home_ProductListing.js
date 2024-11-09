@@ -100,7 +100,7 @@ export default function Home_ProductListing (){
             <Text style={styles.deal}>All Deals</Text>
             <Image
                 source={require('../images/DealCart.png')}
-                style={{marginLeft:200}}
+                style={{marginLeft:200, height:25, width:25}}
             />
             <Image
                 source={require('../images/ima.png')}
@@ -151,7 +151,7 @@ export default function Home_ProductListing (){
                     />  
                     <Image
                         source={require("../images/img3.png")}
-                        style={{width:145, marginLeft:10}}
+                        style={{width:145, height:100, marginLeft:10}}
                     /> 
             </View>
         </View>

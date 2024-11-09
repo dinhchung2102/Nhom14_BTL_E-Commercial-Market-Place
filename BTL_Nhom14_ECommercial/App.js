@@ -5,6 +5,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const Stack = createNativeStackNavigator();
 
 import HomeScreen from './screens/Home_ProductListing'
+import Filter from './screens/Filter';
+import Feedback from './screens/Feedback';
 
 export default function App() {
   return (
@@ -13,7 +15,9 @@ export default function App() {
     //     <Stack.Screen name="Home" component={HomeScreen} />
     //   </Stack.Navigator>
     // </NavigationContainer>
-    <HomeScreen />
+    //<HomeScreen />
+    //<Filter />
+    <Feedback/>
   );
 }
 
