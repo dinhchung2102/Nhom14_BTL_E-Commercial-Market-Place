@@ -1,23 +1,10 @@
 import React, { useState }  from 'react';
 import {Text, View, Pressable, Image, FlatList, StyleSheet, TextInput} from 'react-native';
-import { launchImageLibrary } from 'react-native-image-picker';
+
  
 export default function Feedback(){
-    const [imageUri, setImageUri] = useState(null);
-
-    const handleImagePick = () => {
-        launchImageLibrary({ mediaType: 'photo' }, (response) => {
-        if (response.didCancel) {
-            console.log('User cancelled image picker');
-        } else if (response.errorCode) {
-            console.log('Image Picker Error: ', response.errorMessage);
-        } else if (response.assets && response.assets.length > 0) {
-            setImageUri(response.assets[0].uri);
-        }
-        });
-  };
     return(
-        <View style={{flex:1}}>
+        <View style={{flex:1, width:380, height:800}}>
             <View style={{flex:2, alignItems:'center', flexDirection:"row", borderBottomWidth:1, borderColor:"#C5BCBC"}}>
                 <Text style={styles.header}>Feedback</Text>
                 <Image
@@ -97,37 +84,24 @@ export default function Feedback(){
                 <View style={styles.ti}>
                     <TextInput 
                        style={{margin:5, color:"#98999C", fontWeight:"600"}}
+                       placeholder='Type your feedback'
                     >
-                       Type your feedbacks
+                       
                     </TextInput>
                 </View>
             </View>
             <View style={{flex:3}}>
-                <View style={{flex:1, flexDirection:"row"}}>
+                <View style={{flex:1}}>
                     <Text style={styles.txt1}>Upload images</Text>
                 </View>
-                <Pressable
-                    onPress={handleImagePick}
-                    style={{
-                    borderWidth: 1,
-                    borderColor: '#ccc',
-                    width:75,
-                    height:75,
-                    borderRadius: 10,
-                    backgroundColor: '#f0f0f0',
-                    marginLeft:20,
-                    alignItems:"center",
-                    justifyContent:"center",
-                    }}
-                >
-                    <Text style={{fontSize:30}}>+</Text>
-                </Pressable>
-                {imageUri && (
-                    <Image
-                    source={{ uri: imageUri }}
-                    style={{ width: 80, height: 80, marginTop: 20 }}
-                    />
-                )}
+                <View style={{flex:4, justifyContent:"center"}}>
+                    <Pressable style={{marginLeft:20}}>
+                        <Image
+                            source={require("../images/upload.png")}
+                        />
+                    </Pressable>
+                </View>
+                
             </View>
             <View style={{flex:3}}>
                 <View style={{flex:1, marginTop:20}}>

@@ -7,6 +7,7 @@ const Stack = createNativeStackNavigator();
 import HomeScreen from './screens/Home_ProductListing'
 import Filter from './screens/Filter';
 import Feedback from './screens/Feedback';
+import ProductDetail1 from './screens/ProductDetail1';
 
 export default function App() {
   return (
@@ -17,7 +18,8 @@ export default function App() {
     // </NavigationContainer>
     //<HomeScreen />
     //<Filter />
-    <Feedback/>
+    //<Feedback/>
+    <ProductDetail1 />
   );
 }
 
