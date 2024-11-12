@@ -6,29 +6,32 @@ const data1 =[
       id:"1",
       image:"https://images.pexels.com/photos/1598508/pexels-photo-1598508.jpeg?auto=compress&cs=tinysrgb&w=600",
       title:"Shoe",
-      price:"$299",
+      price:"$ 299",
     },
     {
       id:"2",
       image:"https://images.pexels.com/photos/2070069/pexels-photo-2070069.jpeg?auto=compress&cs=tinysrgb&w=600",
       title:"Tablet",
-      price:"$499",
+      price:"$ 499",
     },
     {
       id:"3",
       image:"https://images.pexels.com/photos/5945906/pexels-photo-5945906.jpeg?auto=compress&cs=tinysrgb&w=600",
       title:"Pear",
-      price:"$99",
+      price:"$ 99",
     },
     {
       id:"4",
       image:"https://images.pexels.com/photos/333984/pexels-photo-333984.jpeg?auto=compress&cs=tinysrgb&w=600",
       title:"Television",
-      price:"$599",
+      price:"$ 599",
     }
   ]
 
-export default function ProductDetail1(){
+export default function ProductDetail1({navigation, route}){
+    const {ima} = route.params;
+    const {tit} = route.params;
+    const {pri} = route.params;
     const renderItem = ({item})=>(
         <Pressable>
             <View style={styles.item}>
@@ -51,7 +54,7 @@ export default function ProductDetail1(){
                     <Text style={{fontSize:13, marginLeft:5}}>
                         4.5
                     </Text>
-                    <Text style={styles.price}>
+                    <Text style={styles.price1}>
                         {item.price}
                     </Text>
                 </View>
@@ -60,13 +63,15 @@ export default function ProductDetail1(){
     )
     return (
         <ScrollView>
-            <View style={{flex:1,width:360, height:1250, }}>
+            <View style={{flex:1,width:360, height:1250, backgroundColor:"#FFFFFF" }}>
                 <View style={{flex: 1, flexDirection: 'row', alignItems:'center'}}>
-                <Image
-                    source={require('../images/back.png')}
-                    style={{marginLeft:10}}
-                />
-                <Text style={styles.deal}>Headphone</Text>
+                <Pressable onPress={()=>navigation.navigate('Home_ProductListing')}>
+                    <Image
+                        source={require('../images/back.png')}
+                        style={{marginLeft:10}}
+                    />
+                </Pressable>
+                <Text style={styles.deal}>{tit}</Text>
                 <Image
                     source={require('../images/DealCart.png')}
                     style={{marginLeft:150, height:25, width:25}}
@@ -80,12 +85,12 @@ export default function ProductDetail1(){
                     <View style={{flex:2,}}>
                         <View style={{flex:5, justifyContent:"center", alignItems:"center"}}>
                             <Image
-                                source={{uri:"https://images.pexels.com/photos/610945/pexels-photo-610945.jpeg?auto=compress&cs=tinysrgb&w=300"}}
-                                style={{width:320, height:150, borderRadius:5 }}
+                                source={{uri:ima}}
+                                style={{width:320, height:180, borderRadius:5 }}
                             />
                         </View>
                         <View style={{flex:2, flexDirection:"row", alignItems:"center", borderBottomWidth:1, borderColor:"#C5BCBC"}}>
-                            <Text style={styles.price}>$ 59</Text>
+                            <Text style={styles.price}>{pri}</Text>
                             <Image
                                 source={require('../images/star.png')}
                                 style={{marginLeft:140, width:20, height:20}}
@@ -141,7 +146,7 @@ export default function ProductDetail1(){
                                 />
                             </View>
                             <View style={{flex:4, borderBottomWidth:1, borderColor:"#C5BCBC"}}>
-                                <View style={{flex:4, flexDirection:"row"}}>
+                                <View style={{flex:4, flexDirection:"row", marginTop:10}}>
                                     <View style={{flex:4}}>
                                         <Image
                                             source={require('../images/pf1.png')}
@@ -260,7 +265,7 @@ const styles = StyleSheet.create({
         margin:8,
         backgroundColor:"#F8F7F7"
     },
-    price:{
+    price1:{
        color:"#11D5EB",
        marginLeft:20,
        fontWeight:"700"

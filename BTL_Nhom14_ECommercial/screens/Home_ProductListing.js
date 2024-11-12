@@ -51,9 +51,9 @@ const data2 =[
     }
   ]
 
-export default function Home_ProductListing (){
+export default function Home_ProductListing ({navigation}){
     const renderItem = ({item})=>(
-        <Pressable>
+        <Pressable onPress={()=> navigation.navigate('ProductDetail1', {ima:item.image, tit:item.title, pri:item.price})}>
             <View style={styles.item}>
                 <View style={{flex:6, justifyContent:"center", alignItems:"center"}}>
                     <Image
@@ -91,7 +91,7 @@ export default function Home_ProductListing (){
             </Pressable>
     )
   return(
-    <View style={{flex: 1, height:800, marginTop:50}}>
+    <View style={{flex: 1, height:800, marginTop:50, backgroundColor:"#FFFFFF"}}>
         <View style={{flex: 1, flexDirection: 'row', alignItems:'center'}}>
             <Image
                 source={require('../images/back.png')}
@@ -168,34 +168,34 @@ export default function Home_ProductListing (){
                 horizontal
             />
         </View>
-        <View style={{flex: 2, flexDirection:"row", justifyContent:"space-between", marginLeft:10, marginRight:10, borderTopWidth:2, borderColor:"#958F8F"}}>
+        <View style={styles.footer}>
             <Pressable>
             <Image
-                source={require("../images/FHome.png")}
+                source={require("../images/home1.png")}
                 style={{width:50,height:50}}
             />
             </Pressable>
             <Pressable>
             <Image
-                source={require("../images/FSearch.png")}
+                source={require("../images/s.png")}
                 style={{width:50,height:50}}
             />
             </Pressable>
             <Pressable>
             <Image
-                source={require("../images/FLike.png")}
+                source={require("../images/f.png")}
+                style={{width:60,height:53}}
+            />
+            </Pressable>
+            <Pressable>
+            <Image
+                source={require("../images/i.png")}
                 style={{width:50,height:50}}
             />
             </Pressable>
             <Pressable>
             <Image
-                source={require("../images/FInbox.png")}
-                style={{width:50,height:50}}
-            />
-            </Pressable>
-            <Pressable>
-            <Image
-                source={require("../images/FAcc.png")}
+                source={require("../images/a.png")}
                 style={{width:50,height:50}}
             />
             </Pressable>
@@ -287,5 +287,9 @@ const styles = StyleSheet.create({
        color:"#11D5EB",
        marginLeft:20,
        fontWeight:"700"
+    },
+    footer:{
+        flex: 2, flexDirection:"row", justifyContent:"space-between", alignItems:"center",
+        marginLeft:10, marginRight:10, borderTopWidth:2, borderColor:"#958F8F"
     }
 });
