@@ -198,7 +198,10 @@ export default function Home_ProductListing ({navigation}){
         </View>
         <View style={{flex: 1, flexDirection:"row", alignItems:"center", marginTop:5}}>
             <Text style={styles.recom}>Recommended for you</Text>
-            <Text style={styles.viewall}>View all</Text>
+            <Pressable onPress={()=>navigation.navigate('Products')}>
+                <Text style={styles.viewall}>View all</Text>
+            </Pressable>
+            
             
         </View>
         <View style={{flex: 5}}>

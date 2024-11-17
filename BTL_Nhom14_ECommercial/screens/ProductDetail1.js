@@ -14,15 +14,13 @@ export default function ProductDetail1({navigation, route}){
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
   
-    // useEffect to fetch data when the component mounts
+  
     useEffect(() => {
-      // The URL of the API
+     
       const url = 'https://66ff34f02b9aac9c997e841a.mockapi.io/api/products';
   
-      // Fetching data from the API
       fetch(url)
         .then((response) => {
-          // Check if the response is okay (status 200-299)
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
