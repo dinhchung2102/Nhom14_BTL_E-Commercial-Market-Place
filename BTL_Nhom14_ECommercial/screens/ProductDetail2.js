@@ -43,10 +43,12 @@ export default function ProductDetail2({navigation}){
     const [selectedSize, setSelectedSize] = useState(null);
 
     const sizes = ['XS','S', 'M', 'L', 'XL'];
+    
     return (
         <ScrollView>
             <View style={{flex:1, height:1150, backgroundColor:"#FFFFFF" }}>
-                <View style={{flex:1}}></View>
+                <View style={{flex:1}}>
+                </View>
                 <View style={{flex:1, flexDirection: 'row', alignItems:'center'}}>
                     <Pressable onPress={()=>navigation.navigate('Home_ProductListing')}>
                         <Image

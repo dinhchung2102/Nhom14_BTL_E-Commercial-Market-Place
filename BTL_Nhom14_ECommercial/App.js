@@ -33,7 +33,7 @@ export default function App() {
       <NavigationContainer style={styles.container}>
         <Stack.Navigator
           //initialRouteName="Product_ListView"
-          initialRouteName="ProductDetail2"
+          initialRouteName="Home_ProductListing"
           screenOptions={{ headerShown: false }}
         >
           <Stack.Screen name="Product_ListView" component={Product_ListView} />

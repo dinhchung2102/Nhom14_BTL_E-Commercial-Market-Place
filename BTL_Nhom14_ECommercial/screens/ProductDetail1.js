@@ -1,37 +1,46 @@
-import React, { useState }  from 'react';
+import React, { useState, useEffect }  from 'react';
 import {Text, View, Pressable, Image, FlatList, StyleSheet, TextInput,ScrollView} from 'react-native';
 
-const data1 =[
-    {
-      id:"1",
-      image:"https://images.pexels.com/photos/1598508/pexels-photo-1598508.jpeg?auto=compress&cs=tinysrgb&w=600",
-      title:"Shoe",
-      price:"$ 299",
-    },
-    {
-      id:"2",
-      image:"https://images.pexels.com/photos/2070069/pexels-photo-2070069.jpeg?auto=compress&cs=tinysrgb&w=600",
-      title:"Tablet",
-      price:"$ 499",
-    },
-    {
-      id:"3",
-      image:"https://images.pexels.com/photos/5945906/pexels-photo-5945906.jpeg?auto=compress&cs=tinysrgb&w=600",
-      title:"Pear",
-      price:"$ 99",
-    },
-    {
-      id:"4",
-      image:"https://images.pexels.com/photos/333984/pexels-photo-333984.jpeg?auto=compress&cs=tinysrgb&w=600",
-      title:"Television",
-      price:"$ 599",
-    }
-  ]
 
 export default function ProductDetail1({navigation, route}){
+
     const {ima} = route.params;
     const {tit} = route.params;
     const {pri} = route.params;
+    const {des} = route.params;
+    const {type} = route.params;
+
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+  
+    // useEffect to fetch data when the component mounts
+    useEffect(() => {
+      // The URL of the API
+      const url = 'https://66ff34f02b9aac9c997e841a.mockapi.io/api/products';
+  
+      // Fetching data from the API
+      fetch(url)
+        .then((response) => {
+          // Check if the response is okay (status 200-299)
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json(); // Parse the JSON data
+        })
+        .then((data) => {
+          setData(data); // Set the data into the state
+          setLoading(false); // Set loading to false after data is fetched
+        })
+        .catch((error) => {
+          setError(error.message); // Set the error message if there is an error
+          setLoading(false); // Set loading to false in case of error
+        });
+    }, []); // Empty dependency array means this effect runs once after the first render
+
+    const filteredProducts = data.filter(
+        (product) => product.type === type
+      );
     const renderItem = ({item})=>(
         <Pressable>
             <View style={styles.item}>
@@ -102,7 +111,7 @@ export default function ProductDetail1({navigation, route}){
                     <View style={{flex:2}}>
                         <View style={{flex:2}}>
                             <Text style={styles.txt1}>Description</Text>
-                            <Text style={styles.txt2}>Description asda a hasihd kasjdkasj dasud asduoas dasodasiduo vnasiod </Text>
+                            <Text style={styles.txt2}>{des}</Text>
                         </View>
                         <View style={{flex:2, borderBottomWidth:1, borderColor:"#C5BCBC"}}>
                             <View style={{flex:2,flexDirection:"row"}}>
@@ -189,7 +198,7 @@ export default function ProductDetail1({navigation, route}){
                             </View>
                             <View style={{flex:5}}>
                                 <FlatList 
-                                    data={data1}
+                                    data={filteredProducts}
                                     keyExtractor={item => item.id}
                                     renderItem={renderItem}
                                     horizontal
