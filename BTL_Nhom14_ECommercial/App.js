@@ -25,6 +25,7 @@ import ProductDetail1 from "./screens/ProductDetail1";
 import ProductDetail2 from "./screens/ProductDetail2";
 import Products from "./screens/Products";
 import Login from "./screens/Login";
+import Register from "./screens/Register";
 
 
 export default function App() {
@@ -49,6 +50,7 @@ export default function App() {
           <Stack.Screen name="Home_ProductListing" component={Home_ProductListing}/>
           <Stack.Screen name="Products" component={Products}/>
           <Stack.Screen name="Login" component={Login}/>
+          <Stack.Screen name="Register" component={Register}/>
         </Stack.Navigator>
       </NavigationContainer>
     </RecoilRoot>

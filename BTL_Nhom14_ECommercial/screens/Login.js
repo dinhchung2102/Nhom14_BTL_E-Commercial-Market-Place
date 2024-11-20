@@ -73,8 +73,11 @@ function Login({navigation}) {
         >
             <Text style={{ color: 'white' }}>Login</Text>
         </Pressable>
-        <View style={{marginTop:20}}>
+        <View style={{marginTop:20, flexDirection:"row"}}>
             <Text>Forgot your password?</Text>
+            <Pressable onPress={()=> navigation.navigate('Register')}>
+            <Text style={{marginLeft:100, color:"blue"}}>Register</Text>
+            </Pressable>
         </View>
         </View>
   );

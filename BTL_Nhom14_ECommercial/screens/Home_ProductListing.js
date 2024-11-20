@@ -36,7 +36,7 @@ export default function Home_ProductListing ({navigation}){
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const listProduct = useRecoilValue(fetchAPIProduct);
+    //const listProduct = useRecoilValue(fetchAPIProduct);
   
     // useEffect to fetch data when the component mounts
     useEffect(() => {
@@ -61,10 +61,24 @@ export default function Home_ProductListing ({navigation}){
           setLoading(false); // Set loading to false in case of error
         });
     }, []); // Empty dependency array means this effect runs once after the first render
+
+    const handleNavigation = (item, navigation)=> {
+         if (item.type === 'Fashion') {
+          navigation.navigate('ProductDetail2', 
+          {
+                ima:item.image, tit:item.title, type:item.type, pri:item.price, des:item.description 
+          });
+        } else {
+            navigation.navigate('ProductDetail1', 
+            {
+                ima:item.image, tit:item.title, type:item.type, pri:item.price, des:item.description
+            });
+        }
+      }
   
    
     const renderItem = ({item})=>(
-        <Pressable onPress={()=> navigation.navigate('ProductDetail1')}>
+        <Pressable onPress={()=>handleNavigation(item,navigation)}>
             <View style={styles.item}>
                 <View style={{flex:6, justifyContent:"center", alignItems:"center"}}>
                     <Image
@@ -204,8 +218,9 @@ export default function Home_ProductListing ({navigation}){
         </View>
         <View style={{flex: 5}}>
             <FlatList 
-                data={listProduct}
-                keyExtractor={item => item.product_id}
+                data={data}
+                //data={listProduct}
+                keyExtractor={item => item.id}
                 renderItem={renderItem}
                 horizontal
             />
