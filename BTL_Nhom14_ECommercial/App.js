@@ -21,8 +21,11 @@ import Feedback from "./screens/Feedback";
 import Filter from "./screens/Filter";
 import Home_ProductListing from "./screens/Home_ProductListing";
 import {RecoilRoot} from "recoil";
-import ProductDetail1 from "./screens/ProductDetail1"
+import ProductDetail1 from "./screens/ProductDetail1";
 import ProductDetail2 from "./screens/ProductDetail2";
+import Products from "./screens/Products";
+import Login from "./screens/Login";
+import Register from "./screens/Register";
 
 
 export default function App() {
@@ -33,7 +36,7 @@ export default function App() {
       <NavigationContainer style={styles.container}>
         <Stack.Navigator
           //initialRouteName="Product_ListView"
-          initialRouteName="Home_ProductListing"
+          initialRouteName="Login"
           screenOptions={{ headerShown: false }}
         >
           <Stack.Screen name="Product_ListView" component={Product_ListView} />
@@ -45,6 +48,9 @@ export default function App() {
           <Stack.Screen name="ProductDetail1" component={ProductDetail1}/>
           <Stack.Screen name="ProductDetail2" component={ProductDetail2}/>
           <Stack.Screen name="Home_ProductListing" component={Home_ProductListing}/>
+          <Stack.Screen name="Products" component={Products}/>
+          <Stack.Screen name="Login" component={Login}/>
+          <Stack.Screen name="Register" component={Register}/>
         </Stack.Navigator>
       </NavigationContainer>
     </RecoilRoot>

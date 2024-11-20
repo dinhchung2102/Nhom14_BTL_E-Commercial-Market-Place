@@ -10,7 +10,6 @@ export default function Home_ProductListing ({navigation}){
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    //Chung================================================
     const listProduct = useRecoilValue(fetchAPIProduct);
   
     // useEffect to fetch data when the component mounts
@@ -36,12 +35,24 @@ export default function Home_ProductListing ({navigation}){
           setLoading(false); // Set loading to false in case of error
         });
     }, []); // Empty dependency array means this effect runs once after the first render
+
+    const handleNavigation = (item, navigation)=> {
+         if (item.type === 'Fashion') {
+          navigation.navigate('ProductDetail2', 
+          {
+                ima:item.image, tit:item.title, type:item.type, pri:item.price, des:item.description 
+          });
+        } else {
+            navigation.navigate('ProductDetail1', 
+            {
+                ima:item.image, tit:item.title, type:item.type, pri:item.price, des:item.description
+            });
+        }
+      }
   
    
     const renderItem = ({item})=>(
-        <Pressable onPress={()=> {navigation.navigate('ProductDetail1')
-            setProductDetail(item)
-        }}>
+        <Pressable onPress={()=> navigation.navigate('ProductDetail1')}>
             <View style={styles.item}>
                 <View style={{flex:6, justifyContent:"center", alignItems:"center"}}>
                     <Image
@@ -173,13 +184,17 @@ export default function Home_ProductListing ({navigation}){
         </View>
         <View style={{flex: 1, flexDirection:"row", alignItems:"center", marginTop:5}}>
             <Text style={styles.recom}>Recommended for you</Text>
-            <Text style={styles.viewall}>View all</Text>
+            <Pressable onPress={()=>navigation.navigate('Products')}>
+                <Text style={styles.viewall}>View all</Text>
+            </Pressable>
+            
             
         </View>
         <View style={{flex: 5}}>
             <FlatList 
-                data={listProduct}
-                keyExtractor={item => item.product_id}
+                data={data}
+                //data={listProduct}
+                keyExtractor={item => item.id}
                 renderItem={renderItem}
                 horizontal
             />

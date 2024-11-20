@@ -5,6 +5,7 @@ export const fetchAPIProduct = selector({
   get: async ({ get }) => {
     try {
       const response = await fetch("http://192.168.29.76:5000/api/products");
+
       if (!response.ok) {
         throw new Error("Failed to fetch Products");
       }

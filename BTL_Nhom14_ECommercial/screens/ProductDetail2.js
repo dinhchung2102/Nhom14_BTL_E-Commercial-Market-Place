@@ -28,11 +28,16 @@ const data1 =[
     }
   ]
 
-export default function ProductDetail2({navigation}){
+export default function ProductDetail2({navigation, route}){
+    const {ima} = route.params;
+    const {tit} = route.params;
+    const {pri} = route.params;
+    const {des} = route.params;
+    const {type} = route.params;
     //useState tăng giảm sô lượng 
     const [count, setCount] = useState(1);
     //useState giá, thành tiền
-    const [price, setTotal] = useState(2.99);
+    const [price, setTotal] = useState(pri);
     const increment = () => {
         setCount(count + 1);
     };
@@ -56,11 +61,11 @@ export default function ProductDetail2({navigation}){
                             style={{marginLeft:10}}
                         />
                     </Pressable>
-                <Text style={styles.deal}>T-Shirt</Text>
+                <Text style={styles.deal}>{tit}</Text>
                 </View>
                 <View style={{flex:5, alignItems:"center", justifyContent:"center"}}>
                         <Image
-                            source={{uri:"https://media.istockphoto.com/id/2141442585/fr/photo/african-american-man-with-african-hairstyle-wearing-hoodie-standing-over-isolated-yellow.webp?a=1&b=1&s=612x612&w=0&k=20&c=erAsWKyEQxuLZiW23QEF5EzZBLcEhahot6pjDTaebJA="}}
+                            source={{uri:ima}}
                             style={{width:320, height:180, borderRadius:6}}
                         />
                 </View>
