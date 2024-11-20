@@ -1,5 +1,7 @@
 import React, { useState, useEffect }  from 'react';
 import {Text, View, Pressable, Image, FlatList, StyleSheet, TextInput,ScrollView} from 'react-native';
+import { useRecoilValue } from 'recoil';
+import { ProductDetail } from '../atoms/ProductAtom';
 
 
 export default function ProductDetail1({navigation, route}){
@@ -13,6 +15,9 @@ export default function ProductDetail1({navigation, route}){
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    const productDetail = useRecoilValue(ProductDetail);
+    
   
     // useEffect to fetch data when the component mounts
     useEffect(() => {
