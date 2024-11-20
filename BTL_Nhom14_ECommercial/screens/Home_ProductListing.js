@@ -11,6 +11,7 @@ export default function Home_ProductListing ({navigation}){
     const [error, setError] = useState(null);
 
     const listProduct = useRecoilValue(fetchAPIProduct);
+    const [, setProductDetail] = useRecoilState(ProductDetail)
   
     // useEffect to fetch data when the component mounts
     useEffect(() => {
@@ -52,7 +53,11 @@ export default function Home_ProductListing ({navigation}){
   
    
     const renderItem = ({item})=>(
-        <Pressable onPress={()=> navigation.navigate('ProductDetail1')}>
+
+        <Pressable onPress={()=> {
+        setProductDetail(item)
+        navigation.navigate('ProductDetail1')
+        }}>
             <View style={styles.item}>
                 <View style={{flex:6, justifyContent:"center", alignItems:"center"}}>
                     <Image
@@ -192,9 +197,10 @@ export default function Home_ProductListing ({navigation}){
         </View>
         <View style={{flex: 5}}>
             <FlatList 
-                data={data}
-                //data={listProduct}
-                keyExtractor={item => item.id}
+                //data={data}
+                //keyExtractor={item => item.id}
+                data={listProduct}
+                keyExtractor={item => item.product_id}
                 renderItem={renderItem}
                 horizontal
             />

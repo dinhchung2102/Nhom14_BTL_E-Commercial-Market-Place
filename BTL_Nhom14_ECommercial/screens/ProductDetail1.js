@@ -1,22 +1,23 @@
 import React, { useState, useEffect }  from 'react';
 import {Text, View, Pressable, Image, FlatList, StyleSheet, TextInput,ScrollView} from 'react-native';
-import { useRecoilValue } from 'recoil';
-import { ProductDetail } from '../atoms/ProductAtom';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { fetchAPIProduct, ProductDetail, ProductType } from '../atoms/ProductAtom';
 
 
-export default function ProductDetail1({navigation, route}){
+export default function ProductDetail1({navigation}){
 
-    const {ima} = route.params;
-    const {tit} = route.params;
-    const {pri} = route.params;
-    const {des} = route.params;
-    const {type} = route.params;
 
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [type, setType] = useState("")
 
     const productDetail = useRecoilValue(ProductDetail);
+    console.log(productDetail.type);
+    
+    const dataProducts = useRecoilValue(fetchAPIProduct);
+    
+    
     
   
   
@@ -41,9 +42,11 @@ export default function ProductDetail1({navigation, route}){
         });
     }, []); // Empty dependency array means this effect runs once after the first render
 
-    const filteredProducts = data.filter(
-        (product) => product.type === type
+    const filteredProducts = dataProducts.filter(
+        (product) => product.type === productDetail.type
       );
+      console.log(filteredProducts);
+      
     const renderItem = ({item})=>(
         <Pressable>
             <View style={styles.item}>
@@ -55,7 +58,7 @@ export default function ProductDetail1({navigation, route}){
                 </View>
                 <View style={{flex:2, justifyContent:"center", marginLeft:20}}>
                     <Text>
-                        {item.title}
+                        {item.name}
                     </Text>
                 </View>
                 <View style={{flex:2, flexDirection:"row", alignItems:"center"}}>
@@ -83,7 +86,7 @@ export default function ProductDetail1({navigation, route}){
                         style={{marginLeft:10}}
                     />
                 </Pressable>
-                <Text style={styles.deal}>{tit}</Text>
+                <Text style={styles.deal}>{productDetail.name}</Text>
                 <Image
                     source={require('../images/DealCart.png')}
                     style={{marginLeft:150, height:25, width:25}}
@@ -97,24 +100,24 @@ export default function ProductDetail1({navigation, route}){
                     <View style={{flex:2,}}>
                         <View style={{flex:5, justifyContent:"center", alignItems:"center"}}>
                             <Image
-                                source={{uri:ima}}
+                                source={{uri:productDetail.image}}
                                 style={{width:320, height:180, borderRadius:5 }}
                             />
                         </View>
                         <View style={{flex:2, flexDirection:"row", alignItems:"center", borderBottomWidth:1, borderColor:"#C5BCBC"}}>
-                            <Text style={styles.price}>{pri}</Text>
+                            <Text style={styles.price}>{productDetail.price}</Text>
                             <Image
                                 source={require('../images/star.png')}
                                 style={{marginLeft:140, width:20, height:20}}
                             />
-                            <Text style={{marginLeft:5}}>4.5</Text>
+                            <Text style={{marginLeft:5}}>{productDetail.stars}</Text>
                             <Text style={styles.rv}>(99 reviews)</Text>
                         </View>
                     </View>
                     <View style={{flex:2}}>
                         <View style={{flex:2}}>
                             <Text style={styles.txt1}>Description</Text>
-                            <Text style={styles.txt2}>{des}</Text>
+                            <Text style={styles.txt2}>{productDetail.description}</Text>
                         </View>
                         <View style={{flex:2, borderBottomWidth:1, borderColor:"#C5BCBC"}}>
                             <View style={{flex:2,flexDirection:"row"}}>
@@ -202,7 +205,7 @@ export default function ProductDetail1({navigation, route}){
                             <View style={{flex:5}}>
                                 <FlatList 
                                     data={filteredProducts}
-                                    keyExtractor={item => item.id}
+                                    keyExtractor={item => item._id}
                                     renderItem={renderItem}
                                     horizontal
                                 />
@@ -247,7 +250,7 @@ const styles = StyleSheet.create({
         fontSize:16, fontWeight:"700", marginLeft:10, width:100
     },
     price:{
-        marginLeft:20, fontSize:20, fontWeight:"700", width:50
+        marginLeft:20, fontSize:20, fontWeight:"700", width:70
     },
     rv:{
         marginRight:20, marginLeft:5

@@ -4,7 +4,7 @@ export const fetchAPIProduct = selector({
   key: "fetchAPIProduct",
   get: async ({ get }) => {
     try {
-      const response = await fetch("http://192.168.29.76:5000/api/products");
+      const response = await fetch("http://192.168.100.70:5000/api/products");
 
       if (!response.ok) {
         throw new Error("Failed to fetch Products");
@@ -21,5 +21,19 @@ export const fetchAPIProduct = selector({
 
 export const ProductDetail = atom({
   key:"ProductDetail",
-  default:[]
+  default:{
+    _id:"",
+    product_id:"",
+    type:"",
+    name:"",
+    image:"",
+    price:"",
+    stars:"",
+    description:""
+  }
+})
+
+export const ProductType = atom({
+  key:"ProductType",
+  default:ProductDetail.type
 })
