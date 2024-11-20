@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {Text, View, Pressable, Image, FlatList, StyleSheet, ScrollView} from 'react-native';
 import stara from '../images/star.png'
+import { useRecoilValue } from 'recoil';
+import { fetchAPIProduct } from '../atoms/ProductAtom';
 
 const data1 =[
   {
@@ -33,6 +35,8 @@ export default function Home_ProductListing ({navigation}){
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    //const listProduct = useRecoilValue(fetchAPIProduct);
   
     // useEffect to fetch data when the component mounts
     useEffect(() => {
@@ -57,16 +61,24 @@ export default function Home_ProductListing ({navigation}){
           setLoading(false); // Set loading to false in case of error
         });
     }, []); // Empty dependency array means this effect runs once after the first render
+
+    const handleNavigation = (item, navigation)=> {
+         if (item.type === 'Fashion') {
+          navigation.navigate('ProductDetail2', 
+          {
+                ima:item.image, tit:item.title, type:item.type, pri:item.price, des:item.description 
+          });
+        } else {
+            navigation.navigate('ProductDetail1', 
+            {
+                ima:item.image, tit:item.title, type:item.type, pri:item.price, des:item.description
+            });
+        }
+      }
   
    
     const renderItem = ({item})=>(
-        <Pressable onPress={()=> navigation.navigate('ProductDetail1', 
-        {ima:item.image, 
-        tit:item.title, 
-        pri:item.price,
-        des:item.description,
-        type:item.type
-        })}>
+        <Pressable onPress={()=>handleNavigation(item,navigation)}>
             <View style={styles.item}>
                 <View style={{flex:6, justifyContent:"center", alignItems:"center"}}>
                     <Image
@@ -76,7 +88,7 @@ export default function Home_ProductListing ({navigation}){
                 </View>
                 <View style={{flex:2, justifyContent:"center", marginLeft:20}}>
                     <Text>
-                        {item.title}
+                        {item.name}
                     </Text>
                 </View>
                 <View style={{flex:2, flexDirection:"row", alignItems:"center"}}>
@@ -85,7 +97,7 @@ export default function Home_ProductListing ({navigation}){
                         style={{width:20, height:20, marginLeft:20}}
                     />
                     <Text style={{fontSize:13, marginLeft:5}}>
-                        4.5
+                        {item.stars}
                     </Text>
                     <Text style={styles.price}>
                         ${item.price}
@@ -198,12 +210,16 @@ export default function Home_ProductListing ({navigation}){
         </View>
         <View style={{flex: 1, flexDirection:"row", alignItems:"center", marginTop:5}}>
             <Text style={styles.recom}>Recommended for you</Text>
-            <Text style={styles.viewall}>View all</Text>
+            <Pressable onPress={()=>navigation.navigate('Products')}>
+                <Text style={styles.viewall}>View all</Text>
+            </Pressable>
+            
             
         </View>
         <View style={{flex: 5}}>
             <FlatList 
                 data={data}
+                //data={listProduct}
                 keyExtractor={item => item.id}
                 renderItem={renderItem}
                 horizontal
