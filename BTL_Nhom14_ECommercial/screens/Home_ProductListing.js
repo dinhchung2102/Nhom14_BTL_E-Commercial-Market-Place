@@ -1,42 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import {Text, View, Pressable, Image, FlatList, StyleSheet, ScrollView} from 'react-native';
 import stara from '../images/star.png'
-import { useRecoilValue } from 'recoil';
-import { fetchAPIProduct } from '../atoms/ProductAtom';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { fetchAPIProduct, ProductDetail } from '../atoms/ProductAtom';
 
-const data1 =[
-  {
-    id:"1",
-    image:"https://images.pexels.com/photos/1598508/pexels-photo-1598508.jpeg?auto=compress&cs=tinysrgb&w=600",
-    title:"Shoe",
-    price:"$299",
-  },
-  {
-    id:"2",
-    image:"https://images.pexels.com/photos/2070069/pexels-photo-2070069.jpeg?auto=compress&cs=tinysrgb&w=600",
-    title:"Tablet",
-    price:"$499",
-  },
-  {
-    id:"3",
-    image:"https://images.pexels.com/photos/5945906/pexels-photo-5945906.jpeg?auto=compress&cs=tinysrgb&w=600",
-    title:"Pear",
-    price:"$99",
-  },
-  {
-    id:"4",
-    image:"https://images.pexels.com/photos/333984/pexels-photo-333984.jpeg?auto=compress&cs=tinysrgb&w=600",
-    title:"Television",
-    price:"$599",
-  }
-]
 
 export default function Home_ProductListing ({navigation}){
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    //const listProduct = useRecoilValue(fetchAPIProduct);
+    const listProduct = useRecoilValue(fetchAPIProduct);
+    const [, setProductDetail] = useRecoilState(ProductDetail)
   
     // useEffect to fetch data when the component mounts
     useEffect(() => {
@@ -78,7 +53,11 @@ export default function Home_ProductListing ({navigation}){
   
    
     const renderItem = ({item})=>(
-        <Pressable onPress={()=>handleNavigation(item,navigation)}>
+
+        <Pressable onPress={()=> {
+        setProductDetail(item)
+        navigation.navigate('ProductDetail1')
+        }}>
             <View style={styles.item}>
                 <View style={{flex:6, justifyContent:"center", alignItems:"center"}}>
                     <Image
@@ -218,9 +197,10 @@ export default function Home_ProductListing ({navigation}){
         </View>
         <View style={{flex: 5}}>
             <FlatList 
-                data={data}
-                //data={listProduct}
-                keyExtractor={item => item.id}
+                //data={data}
+                //keyExtractor={item => item.id}
+                data={listProduct}
+                keyExtractor={item => item.product_id}
                 renderItem={renderItem}
                 horizontal
             />
