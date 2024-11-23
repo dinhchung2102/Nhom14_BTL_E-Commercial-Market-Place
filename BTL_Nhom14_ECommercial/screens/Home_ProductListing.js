@@ -1,55 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import {Text, View, Pressable, Image, FlatList, StyleSheet, ScrollView} from 'react-native';
+import {Text, View, Pressable, Image, FlatList, StyleSheet, ScrollView, TextInput} from 'react-native';
 import stara from '../images/star.png'
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { fetchAPIProduct, ProductDetail } from '../atoms/ProductAtom';
+import {FontAwesome6, FontAwesome, FontAwesome5} from '@expo/vector-icons'
+import SearchBar from '../components/SearchBar.js';
 
 
 export default function Home_ProductListing ({navigation}){
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
 
     const listProduct = useRecoilValue(fetchAPIProduct);
     const [, setProductDetail] = useRecoilState(ProductDetail)
-  
-    // useEffect to fetch data when the component mounts
-    useEffect(() => {
-      // The URL of the API
-      const url = 'https://66ff34f02b9aac9c997e841a.mockapi.io/api/products';
-  
-      // Fetching data from the API
-      fetch(url)
-        .then((response) => {
-          // Check if the response is okay (status 200-299)
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json(); // Parse the JSON data
-        })
-        .then((data) => {
-          setData(data); // Set the data into the state
-          setLoading(false); // Set loading to false after data is fetched
-        })
-        .catch((error) => {
-          setError(error.message); // Set the error message if there is an error
-          setLoading(false); // Set loading to false in case of error
-        });
-    }, []); // Empty dependency array means this effect runs once after the first render
-
-    const handleNavigation = (item, navigation)=> {
-         if (item.type === 'Fashion') {
-          navigation.navigate('ProductDetail2', 
-          {
-                ima:item.image, tit:item.title, type:item.type, pri:item.price, des:item.description 
-          });
-        } else {
-            navigation.navigate('ProductDetail1', 
-            {
-                ima:item.image, tit:item.title, type:item.type, pri:item.price, des:item.description
-            });
-        }
-      }
   
    
     const renderItem = ({item})=>(
@@ -88,34 +49,25 @@ export default function Home_ProductListing ({navigation}){
   return(
     <ScrollView>
         <View style={{flex: 1, height:1000, marginTop:50, backgroundColor:"#FFFFFF"}}>
-        <View style={{flex: 1, flexDirection: 'row', alignItems:'center'}}>
+        <View style={{flex: 1, flexDirection: 'row', alignItems:'center', justifyContent:'space-between'}}>
+            <View style={{flexDirection:'row', alignItems:'center'}}>
             <Image
                 source={require('../images/back.png')}
                 style={{marginLeft:10}}
             />
             <Text style={styles.deal}>All Deals</Text>
-            <Image
-                source={require('../images/DealCart.png')}
-                style={{marginLeft:200, height:25, width:25}}
-            />
-            <Image
-                source={require('../images/ima.png')}
-                style={{marginLeft:10, width:40, height:40, borderRadius:40}}
-            />
+            </View>
+
+            <View style={{flexDirection:'row', alignItems:'center'}}>
+            <FontAwesome name='shopping-cart' size={30} color={'#09D1C7'}/>
+                <Image source={require('../images/ima.png')} style={{width: 40, height: 40, borderRadius:20, marginRight: 10, marginLeft: 10}}/>
+              
+            </View>
+            
         </View>
-        <View style={{flex: 1, marginTop:20, flexDirection:'row'}}>
-          <Pressable style={{flexDirection:'row', width:250, height:27, backgroundColor:"#EFF1F9", borderRadius:3, marginLeft: 30, alignItems:"center"}}>
-          <Image
-            style={{width:25, height:25}}
-          />
-          <Text style={{color:"#958F8F"}}>
-           Search for product
-          </Text>
-          </Pressable>
-          <Image
-            source={require('../images/filter.png')}
-            style={{marginLeft:30,width:27, height:27}}
-          />
+       
+        <View style={{flex: 1, marginTop:5, flexDirection:'row', alignItems:'center', marginLeft: 12}}>
+         <SearchBar/>
         </View>
         
         <ScrollView horizontal={true}>
