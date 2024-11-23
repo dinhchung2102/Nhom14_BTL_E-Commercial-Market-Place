@@ -7,7 +7,7 @@ const SearchBar = () => {
   const [searchQuery, setSearchQuery] = useState('');
 
   return (
-    <View style={{ flexDirection: 'row', width: '95%', alignItems:'center' }}>
+    <View style={{ flexDirection: 'row', alignItems:'center' }}>
       <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#E4E4E4', flex: 1, borderRadius: 10, marginRight: 10, height: 40 }}>
         <FontAwesome
           name="search"
