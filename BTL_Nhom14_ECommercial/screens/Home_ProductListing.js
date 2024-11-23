@@ -3,6 +3,7 @@ import {Text, View, Pressable, Image, FlatList, StyleSheet, ScrollView, TextInpu
 import stara from '../images/star.png'
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { fetchAPIProduct, ProductDetail } from '../atoms/ProductAtom';
+import {categorySelector} from '../atoms/CategoryAtoms.js'
 import {FontAwesome6, FontAwesome, FontAwesome5} from '@expo/vector-icons'
 import SearchBar from '../components/SearchBar.js';
 
@@ -11,7 +12,24 @@ export default function Home_ProductListing ({navigation}){
 
     const listProduct = useRecoilValue(fetchAPIProduct);
     const [, setProductDetail] = useRecoilState(ProductDetail)
-  
+    const listCaterory = useRecoilValue(categorySelector)
+    const [startCate, setStartCate] = useState(0);
+    const [endCate, setEndCate] = useState(3);
+
+
+    const renderCategory = ({item}) =>{
+        return(
+            <Pressable style={{alignItems:'center', width:130}}>
+            <Image source={{uri:item.image}} style={{width: 80, height: 80, borderRadius: 40, borderWidth: 2, borderColor:'#09D1C7'}}/>
+            <Text style={{fontWeight:'bold'}}>{item.name}</Text>
+        </Pressable>
+        )
+        
+    }
+
+
+
+
    
     const renderItem = ({item})=>(
 
@@ -46,6 +64,9 @@ export default function Home_ProductListing ({navigation}){
             </View>
         </Pressable>
     )
+
+
+
   return(
     <SafeAreaView style={{marginTop: 40}}>
     <ScrollView>
@@ -71,47 +92,39 @@ export default function Home_ProductListing ({navigation}){
          <SearchBar/>
         </View>
         
-        <ScrollView horizontal={true}>
-            <View style={{flex: 3, alignItems:"center", width:500, flexDirection:"row"}}>
+ 
+            <View style={{flex: 3,margin:10, alignItems:"center", flexDirection:'row', justifyContent:'space-between'}}>
+
             
-                <Pressable style={styles.pres} 
-                    onPress={()=>navigation.navigate('Product_ListView')}
-                >
-                    <Image
-                        source={{uri:"https://images.pexels.com/photos/356056/pexels-photo-356056.jpeg?auto=compress&cs=tinysrgb&w=600"}}
-                        style={{ width: 80, height: 80, borderRadius:40 }}
-                    />
-                    <Text style={{marginTop:5}}>Electronics</Text>
-                </Pressable>
-                <Pressable style={styles.pres} 
-                    onPress={()=>navigation.navigate('Product_ListView')}
-                >
-                    <Image
-                        source={{uri:"https://images.pexels.com/photos/708777/pexels-photo-708777.jpeg?auto=compress&cs=tinysrgb&w=600"}}
-                        style={{ width: 80, height: 80, borderRadius:40 }}
-                    />
-                    <Text style={{marginTop:5}}>Fresh fruits</Text>
-                </Pressable>
-                <Pressable style={styles.pres} 
-                    onPress={()=>navigation.navigate('Product_ListView')}
-                >
-                    <Image
-                        source={{uri:"https://images.pexels.com/photos/19090/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=600"}}
-                        style={{ width: 80, height: 80, borderRadius:40 }}
-                    />
-                    <Text style={{marginTop:5}}>Fashion</Text>
-                </Pressable>
-                <Pressable style={styles.pres} >
-                    <Image
-                        source={{uri:"https://images.pexels.com/photos/1377034/pexels-photo-1377034.jpeg?auto=compress&cs=tinysrgb&w=600"}}
-                        style={{ width: 80, height: 80, borderRadius:40 }}
-                    />
-                    <Text style={{marginTop:5}}>Beauty</Text>
-                </Pressable>
+            <Pressable onPress={() =>{
+                if(startCate >= 3){
+                    setEndCate(endCate-3)
+                    setStartCate(startCate-3)
+                }
                 
+             }}>
+                <FontAwesome name='angle-left' size={30}/>
+            </Pressable>
+            {listCaterory.slice(startCate,endCate).map((item) => (
+              <View key={item._id}> 
+                {renderCategory({ item })}
+              </View>
+            ))}
+             <Pressable onPress={() =>{
+                if(endCate < listCaterory.length){
+                    setEndCate(endCate+3)
+                    setStartCate(startCate+3)
+                }
+                
+             }}>
+                <FontAwesome name='angle-right' size={30}/>
+            </Pressable>
+
+
+
                 
             </View>
-            </ScrollView>
+         
         
         
         <View style={styles.view}>
