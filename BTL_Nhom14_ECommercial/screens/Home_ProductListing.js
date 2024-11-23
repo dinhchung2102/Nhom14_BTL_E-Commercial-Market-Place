@@ -1,56 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import {Text, View, Pressable, Image, FlatList, StyleSheet, ScrollView} from 'react-native';
+import {Text, View, Pressable, Image, FlatList, StyleSheet, ScrollView, TextInput, SafeAreaView} from 'react-native';
 import stara from '../images/star.png'
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { fetchAPIProduct, ProductDetail } from '../atoms/ProductAtom';
+import {categorySelector} from '../atoms/CategoryAtoms.js'
+import {FontAwesome6, FontAwesome, FontAwesome5} from '@expo/vector-icons'
+import SearchBar from '../components/SearchBar.js';
 
 
 export default function Home_ProductListing ({navigation}){
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
 
     const listProduct = useRecoilValue(fetchAPIProduct);
     const [, setProductDetail] = useRecoilState(ProductDetail)
-  
-    // useEffect to fetch data when the component mounts
-    useEffect(() => {
-      // The URL of the API
-      const url = 'https://66ff34f02b9aac9c997e841a.mockapi.io/api/products';
-  
-      // Fetching data from the API
-      fetch(url)
-        .then((response) => {
-          // Check if the response is okay (status 200-299)
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json(); // Parse the JSON data
-        })
-        .then((data) => {
-          setData(data); // Set the data into the state
-          setLoading(false); // Set loading to false after data is fetched
-        })
-        .catch((error) => {
-          setError(error.message); // Set the error message if there is an error
-          setLoading(false); // Set loading to false in case of error
-        });
-    }, []); // Empty dependency array means this effect runs once after the first render
+    const listCaterory = useRecoilValue(categorySelector)
+    const [startCate, setStartCate] = useState(0);
+    const [endCate, setEndCate] = useState(3);
 
-    const handleNavigation = (item, navigation)=> {
-         if (item.type === 'Fashion') {
-          navigation.navigate('ProductDetail2', 
-          {
-                ima:item.image, tit:item.title, type:item.type, pri:item.price, des:item.description 
-          });
-        } else {
-            navigation.navigate('ProductDetail1', 
-            {
-                ima:item.image, tit:item.title, type:item.type, pri:item.price, des:item.description
-            });
-        }
-      }
-  
+
+    const renderCategory = ({item}) =>{
+        return(
+            <Pressable style={{alignItems:'center', width:130}}>
+            <Image source={{uri:item.image}} style={{width: 80, height: 80, borderRadius: 40, borderWidth: 2, borderColor:'#09D1C7'}}/>
+            <Text style={{fontWeight:'bold'}}>{item.name}</Text>
+        </Pressable>
+        )
+        
+    }
+
+
+
+
    
     const renderItem = ({item})=>(
 
@@ -70,14 +49,14 @@ export default function Home_ProductListing ({navigation}){
                         {item.name}
                     </Text>
                 </View>
-                <View style={{flex:2, flexDirection:"row", alignItems:"center"}}>
-                    <Image
-                        source={require("../images/star.png")}
-                        style={{width:20, height:20, marginLeft:20}}
-                    />
-                    <Text style={{fontSize:13, marginLeft:5}}>
+                <View style={{flex:2, flexDirection:"row", alignItems:"center", justifyContent:'space-between', borderTopWidth: 0.5}}>
+                    <View style={{flexDirection:'row', alignItems:"center", marginLeft:3}}>
+                    <FontAwesome name='star' size={20} color={'#FFD167'} />
+                    <Text style={{fontSize:13}}>
                         {item.stars}
                     </Text>
+                    </View>
+                    
                     <Text style={styles.price}>
                         ${item.price}
                     </Text>
@@ -85,80 +64,67 @@ export default function Home_ProductListing ({navigation}){
             </View>
         </Pressable>
     )
+
+
+
   return(
+    <SafeAreaView style={{marginTop: 40}}>
     <ScrollView>
-        <View style={{flex: 1, height:1000, marginTop:50, backgroundColor:"#FFFFFF"}}>
-        <View style={{flex: 1, flexDirection: 'row', alignItems:'center'}}>
+        <View style={{flex: 1, height:1000, backgroundColor:"#FFFFFF"}}>
+        <View style={{flex: 1, flexDirection: 'row', alignItems:'center', justifyContent:'space-between'}}>
+            <View style={{flexDirection:'row', alignItems:'center'}}>
             <Image
                 source={require('../images/back.png')}
                 style={{marginLeft:10}}
             />
             <Text style={styles.deal}>All Deals</Text>
-            <Image
-                source={require('../images/DealCart.png')}
-                style={{marginLeft:200, height:25, width:25}}
-            />
-            <Image
-                source={require('../images/ima.png')}
-                style={{marginLeft:10, width:40, height:40, borderRadius:40}}
-            />
+            </View>
+
+            <View style={{flexDirection:'row', alignItems:'center'}}>
+            <FontAwesome name='shopping-cart' size={30} color={'#09D1C7'}/>
+                <Image source={require('../images/ima.png')} style={{width: 40, height: 40, borderRadius:20, marginRight: 10, marginLeft: 10}}/>
+              
+            </View>
+            
         </View>
-        <View style={{flex: 1, marginTop:20, flexDirection:'row'}}>
-          <Pressable style={{flexDirection:'row', width:250, height:27, backgroundColor:"#EFF1F9", borderRadius:3, marginLeft: 30, alignItems:"center"}}>
-          <Image
-            style={{width:25, height:25}}
-          />
-          <Text style={{color:"#958F8F"}}>
-           Search for product
-          </Text>
-          </Pressable>
-          <Image
-            source={require('../images/filter.png')}
-            style={{marginLeft:30,width:27, height:27}}
-          />
+       
+        <View style={{flex: 1, marginTop:13, flexDirection:'row', alignItems:'center', marginLeft: 12}}>
+         <SearchBar/>
         </View>
         
-        <ScrollView horizontal={true}>
-            <View style={{flex: 3, alignItems:"center", width:500, flexDirection:"row"}}>
+ 
+            <View style={{flex: 3,margin:10, alignItems:"center", flexDirection:'row', justifyContent:'space-between'}}>
+
             
-                <Pressable style={styles.pres} 
-                    onPress={()=>navigation.navigate('Product_ListView')}
-                >
-                    <Image
-                        source={{uri:"https://images.pexels.com/photos/356056/pexels-photo-356056.jpeg?auto=compress&cs=tinysrgb&w=600"}}
-                        style={{ width: 80, height: 80, borderRadius:40 }}
-                    />
-                    <Text style={{marginTop:5}}>Electronics</Text>
-                </Pressable>
-                <Pressable style={styles.pres} 
-                    onPress={()=>navigation.navigate('Product_ListView')}
-                >
-                    <Image
-                        source={{uri:"https://images.pexels.com/photos/708777/pexels-photo-708777.jpeg?auto=compress&cs=tinysrgb&w=600"}}
-                        style={{ width: 80, height: 80, borderRadius:40 }}
-                    />
-                    <Text style={{marginTop:5}}>Fresh fruits</Text>
-                </Pressable>
-                <Pressable style={styles.pres} 
-                    onPress={()=>navigation.navigate('Product_ListView')}
-                >
-                    <Image
-                        source={{uri:"https://images.pexels.com/photos/19090/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=600"}}
-                        style={{ width: 80, height: 80, borderRadius:40 }}
-                    />
-                    <Text style={{marginTop:5}}>Fashion</Text>
-                </Pressable>
-                <Pressable style={styles.pres} >
-                    <Image
-                        source={{uri:"https://images.pexels.com/photos/1377034/pexels-photo-1377034.jpeg?auto=compress&cs=tinysrgb&w=600"}}
-                        style={{ width: 80, height: 80, borderRadius:40 }}
-                    />
-                    <Text style={{marginTop:5}}>Beauty</Text>
-                </Pressable>
+            <Pressable onPress={() =>{
+                if(startCate >= 3){
+                    setEndCate(endCate-3)
+                    setStartCate(startCate-3)
+                }
                 
+             }}>
+                <FontAwesome name='angle-left' size={30}/>
+            </Pressable>
+            {listCaterory.slice(startCate,endCate).map((item) => (
+              <View key={item._id}> 
+                {renderCategory({ item })}
+              </View>
+            ))}
+             <Pressable onPress={() =>{
+                if(endCate < listCaterory.length){
+                    setEndCate(endCate+3)
+                    setStartCate(startCate+3)
+                }
+                
+             }}>
+                <FontAwesome name='angle-right' size={30}/>
+            </Pressable>
+
+
+
                 
             </View>
-            </ScrollView>
+         
         
         
         <View style={styles.view}>
@@ -241,6 +207,7 @@ export default function Home_ProductListing ({navigation}){
         </View>
     </View>
     </ScrollView>
+    </SafeAreaView>
     
   )
 }
@@ -320,12 +287,15 @@ const styles = StyleSheet.create({
         width:130,
         height:150,
         margin:8,
-        backgroundColor:"#F8F7F7"
+        backgroundColor:"white",
+        borderRadius:15, 
+        borderWidth: 1,
+        borderColor:'grey'
     },
     price:{
        color:"#11D5EB",
-       marginLeft:20,
-       fontWeight:"700"
+       fontWeight:"700",
+       marginRight:3
     },
     footer:{
         flex: 2, flexDirection:"row", justifyContent:"space-between", alignItems:"center",
