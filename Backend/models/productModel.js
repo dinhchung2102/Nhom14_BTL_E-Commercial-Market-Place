@@ -2,12 +2,13 @@ const mongoose = require("mongoose");
 
 const ProductSchema = new mongoose.Schema({
   product_id: {
-    type: Number,
+    type: Number,  
     required: true,
     unique: true,
   },
-  type: {
-    type: String,
+  category_id: {
+    type: mongoose.Schema.Types.ObjectId,  
+    ref: "Category",  
     required: true,
   },
   name: {
@@ -34,5 +35,7 @@ const ProductSchema = new mongoose.Schema({
   },
 });
 
+// Tạo model cho Product
 const Product = mongoose.model("Product", ProductSchema);
+
 module.exports = Product;

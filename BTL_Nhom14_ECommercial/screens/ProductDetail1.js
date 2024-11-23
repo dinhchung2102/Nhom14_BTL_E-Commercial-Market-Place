@@ -6,41 +6,9 @@ import { fetchAPIProduct, ProductDetail, ProductType } from '../atoms/ProductAto
 
 export default function ProductDetail1({navigation}){
 
-
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [type, setType] = useState("")
-
-    const productDetail = useRecoilValue(ProductDetail);
-    console.log(productDetail.type);
-    
+    const [productDetail, setProductDetail] = useRecoilState(ProductDetail);
     const dataProducts = useRecoilValue(fetchAPIProduct);
     
-    
-    
-  
-  
-    useEffect(() => {
-     
-      const url = 'https://66ff34f02b9aac9c997e841a.mockapi.io/api/products';
-  
-      fetch(url)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json(); // Parse the JSON data
-        })
-        .then((data) => {
-          setData(data); // Set the data into the state
-          setLoading(false); // Set loading to false after data is fetched
-        })
-        .catch((error) => {
-          setError(error.message); // Set the error message if there is an error
-          setLoading(false); // Set loading to false in case of error
-        });
-    }, []); // Empty dependency array means this effect runs once after the first render
 
     const filteredProducts = dataProducts.filter(
         (product) => product.type === productDetail.type
@@ -48,7 +16,10 @@ export default function ProductDetail1({navigation}){
       console.log(filteredProducts);
       
     const renderItem = ({item})=>(
-        <Pressable>
+        <Pressable onPress={() =>{
+            setProductDetail(item);
+            navigation.replace("ProductDetail1")
+        }}>
             <View style={styles.item}>
                 <View style={{flex:6, justifyContent:"center", alignItems:"center"}}>
                     <Image
@@ -67,7 +38,7 @@ export default function ProductDetail1({navigation}){
                         style={{width:20, height:20, marginLeft:20}}
                     />
                     <Text style={{fontSize:13, marginLeft:5}}>
-                        4.5
+                        {item.rate}
                     </Text>
                     <Text style={styles.price1}>
                         {item.price}
@@ -78,7 +49,7 @@ export default function ProductDetail1({navigation}){
     )
     return (
         <ScrollView>
-            <View style={{flex:1,width:360, height:1250, backgroundColor:"#FFFFFF" }}>
+            <View style={{flex:1, height:1250, backgroundColor:"#FFFFFF" }}>
                 <View style={{flex: 1, flexDirection: 'row', alignItems:'center'}}>
                 <Pressable onPress={()=>navigation.navigate('Home_ProductListing')}>
                     <Image
@@ -101,7 +72,7 @@ export default function ProductDetail1({navigation}){
                         <View style={{flex:5, justifyContent:"center", alignItems:"center"}}>
                             <Image
                                 source={{uri:productDetail.image}}
-                                style={{width:320, height:180, borderRadius:5 }}
+                                style={{width:190, height:180, borderRadius:5 }}
                             />
                         </View>
                         <View style={{flex:2, flexDirection:"row", alignItems:"center", borderBottomWidth:1, borderColor:"#C5BCBC"}}>

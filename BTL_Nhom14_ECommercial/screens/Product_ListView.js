@@ -13,11 +13,22 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { maxProductList } from "../atoms/MaxProductList";
+import SearchBar from "../components/SearchBar";
+import { categorySelector, categoryState } from "../atoms/CategoryAtoms";
+import { fetchAPIProduct } from "../atoms/ProductAtom";
 
 export default function Product_ListView({ navigation }) {
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
   const translateX = useState(new Animated.Value(0))[0]; // Điều khiển di chuyển theo trục X
-  const [maxProduct, setMaxProduct] = useRecoilState(maxProductList)
+
+
+
+  const dataProducts = useRecoilValue(fetchAPIProduct);
+  const [maxProduct, setMaxProduct] = useState(3);
+  const dataCate = useRecoilValue(categorySelector);
+  const [categoryDetail, setCategoryDetail] = useRecoilState(categoryState);
+  const [startCate, setStartCate] = useState(0);
+  const [endCate, setEndCate] = useState(3) 
 
   useEffect(() => {
     const bannerInterval = setInterval(() => {
@@ -50,21 +61,8 @@ export default function Product_ListView({ navigation }) {
     return () => clearInterval(bannerInterval); // Dọn dẹp khi component unmount
   }, [translateX]);
 
-
-  const dataCate = [
-    { id: 1, name: "chung", image: "link" },
-    { id: 2, name: "name", image: "link" },
-    { id: 3, name: "sssss", image: "link" },
-  ];
-
-  const dataProduct = [
-    { id: 1, name: "product1", price: 880, rate: 0 },
-    { id: 2, name: "product2", price: 880, rate: 0 },
-    { id: 3, name: "product3", price: 880, rate: 0 },
-    { id: 4, name: "product4", price: 880, rate: 0 },
-    { id: 5, name: "product5", price: 880, rate: 0 },
-    { id: 6, name: "product6", price: 880, rate: 0 },
-  ];
+  
+  const dataProductFilter = dataProducts.filter((item) => item.category_id == categoryDetail._id);
 
   const dataBanner = [
     "https://www.sys-track.com/img/custom/mobileappDevlopment.png",
@@ -74,29 +72,30 @@ export default function Product_ListView({ navigation }) {
 
 
   const renderItemProduct = ({ item }) => (
-    <View
+    <Pressable
       style={{
         flexDirection: "row",
         borderRadius: 15,
         borderWidth: 1,
-        width: 380,
+        width: 420,
         height: 100,
         marginBottom: 10,
         borderColor: "#D3D3D3",
+        alignItems:'center'
       }}
     >
       <Image
-        source={{ uri: "link" }}
+        source={{ uri: item.image }}
         style={{
-          width: 100,
-          height: 100,
-          backgroundColor: "red",
+          width: 98,
+          height: 98,
+          backgroundColor: "white",
           marginRight: 10,
           borderTopLeftRadius: 15,
           borderBottomLeftRadius: 15,
         }}
       />
-      <View style={{ justifyContent: "center", marginRight: 120 }}>
+      <View style={{ justifyContent: "center", marginRight: 10, flex: 8}}>
         <Text style={{ fontSize: 20, fontWeight: "bold" }}>{item.name}</Text>
         <View style={{ flexDirection: "row" }}>
           <FontAwesome name="star" color={"#FFD700"} size={20} />
@@ -105,77 +104,46 @@ export default function Product_ListView({ navigation }) {
           <FontAwesome name="star" color={"#FFD700"} size={20} />
           <FontAwesome name="star" color={"#FFD700"} size={20} />
         </View>
-      </View>
-      <View style={{ justifyContent: "center" }}>
-        <Pressable onPress={() => navigation.navigate("Checkout_Cart")}>
-          <FontAwesome name="plus-circle" size={30} color={'blue'} />
-        </Pressable>
-
+        
         <Text style={{ fontSize: 20, fontWeight: "bold" }}>
           {item.price}$
         </Text>
       </View>
-    </View>
-  );
-
-  const renderItem = ({ item }) => (
-    <View
-      style={{
-        flex: 1,
-        alignItems: "center",
-        marginRight: 5,
-        marginLeft: 5,
-      }}
-    >
-      <Image
-        source={{ uri: "" }}
-        style={{
-          width: 100,
-          height: 100,
-          backgroundColor: "red",
-          borderRadius: 50,
-        }}
-      />
-      <Text style={{ alignContent: "center", fontWeight: "bold", fontSize: 15 }}>
-        {item.name}
-      </Text>
-    </View>
+        <Pressable onPress={() => navigation.navigate("Checkout_Cart")} style={{flex: 1}}>
+          <FontAwesome name="plus-circle" size={30} color={'blue'} />
+        </Pressable>
+    </Pressable>
   );
 
   return (
-    <SafeAreaProvider>
-      <ScrollView>
+      
         <SafeAreaView style={styles.container}>
+          <ScrollView>
           <View style={styles.header}>
-            <Pressable style={styles.headerButton} onPress={() =>{navigation.navigate("Checkout_Payment_Method")}}>
+
+            <View style={{flexDirection:'row', alignItems:'center', flex: 3, height: 30, justifyContent:'flex-start'}}>
+            <Pressable style={styles.headerButton} onPress={() =>{navigation.navigate("Home_ProductListing")}}>
               <AntDesign name="left" size={25} color={"grey"} />
             </Pressable>
-            <Text style={styles.headerType}>Electronics</Text>
+
+            <Text style={styles.headerType}>{categoryDetail.name}</Text>
+            </View>
+            
+
+
+            <View style={{flexDirection:'row', alignItems:'center', flex: 0.6, height: 30, justifyContent:'space-between'}}>
             <Pressable style={styles.headerButton}>
               <AntDesign name="shoppingcart" color={"grey"} size={30} />
             </Pressable>
-            <Image
-              source={{
-                uri: "https://cdn-icons-png.flaticon.com/512/6596/6596121.png",
-              }}
-              style={{ width: 50, height: 50, flex: 1 }}
-            />
+            <Pressable style={styles.headerButton}>
+              <FontAwesome name="commenting-o" size={28} color={'grey'}/>
+            </Pressable>
+            </View>
+            
+            
           </View>
 
-          <View style={styles.searchView}>
-            <View style={styles.txtSearchView}>
-              <FontAwesome
-                name="search"
-                size={20}
-                color={"black"}
-                style={{ marginLeft: 5, marginRight: 5 }}
-              />
-              <TextInput placeholder="Search here" style={{ flex: 1 }} />
-            </View>
-            <Pressable style={styles.listIcon}>
-              <FontAwesome name="list-ul" size={30} />
-            </Pressable>
-          </View>
+          <SearchBar/>
 
           <View style={styles.cateView}>
             <View style={styles.cateButtonView}>
@@ -186,15 +154,36 @@ export default function Product_ListView({ navigation }) {
               </Pressable>
             </View>
             <View style={styles.listCate}>
-              {dataCate.map((item) => (
-                <View key={item.id} style={styles.categoryItem}>
-                  <Image
-                    source={{ uri: item.image }}
-                    style={{ width: 100, height: 100, borderRadius: 50, backgroundColor: 'red' }}
-                  />
-                  <Text style={{ fontSize: 15, fontWeight: "bold" }}>{item.name}</Text>
-                </View>
+              <Pressable onPress={() =>{
+                if(startCate >= 3){
+                  setStartCate(startCate-3);
+                  setEndCate(endCate-3)
+                }
+              }}>
+                <FontAwesome name="angle-left" size={30}/>
+              </Pressable>
+
+
+
+              {dataCate.slice(startCate,endCate).map((item) => (
+                <Pressable key={(item._id)} style={{alignItems:'center', width:130}} onPress={() => {
+                  navigation.replace("Product_ListView");
+                  setCategoryDetail(item);
+
+                }}>
+                <Image source={{uri:item.image}} style={{width: 80, height: 80, borderRadius: 40, borderWidth: 2, borderColor:'#09D1C7'}}/>
+                <Text style={{fontWeight:'bold'}}>{item.name}</Text>
+            </Pressable>
               ))}
+
+<Pressable onPress={() =>{
+                 if(endCate < dataCate.length){
+                  setEndCate(endCate+3)
+                  setStartCate(startCate+3)
+              }
+              }}>
+                <FontAwesome name="angle-right" size={30}/>
+              </Pressable>
             </View>
           </View>
 
@@ -211,8 +200,8 @@ export default function Product_ListView({ navigation }) {
           </View>
 
           <View style={styles.listProduct}>
-            {dataProduct.slice(0, maxProduct).map((item, index) => (
-              <View key={item.id || index}> 
+            {dataProductFilter.slice(0, maxProduct).map((item, index) => (
+              <View key={item._id || index}> 
                 {renderItemProduct({ item })}
               </View>
             ))}
@@ -229,9 +218,10 @@ export default function Product_ListView({ navigation }) {
               source={{ uri: dataBanner[currentBannerIndex] }}
             />
           </View>
+          </ScrollView>
         </SafeAreaView>
-      </ScrollView>
-    </SafeAreaProvider>
+      
+
   );
 }
 
@@ -239,39 +229,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    backgroundColor:'white'
   },
   header: {
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 15,
-    width: "95%",
-  },
-  headerButton: {
-    marginRight: 5,
   },
   headerType: {
     fontSize: 20,
     fontWeight: "bold",
     textAlign: "center",
-    marginRight: "43%",
-  },
-  searchView: {
-    width: "95%",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  txtSearchView: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderRadius: 25,
-    borderBottomEndRadius: 0,
-    borderTopEndRadius: 0,
-    borderWidth: 1,
-    borderColor: "#D3D3D3",
-    backgroundColor: "#D3D3D3",
-    flex: 1,
-    height: 40,
+    marginRight: "48%",
   },
   listIcon: {
     width: 50,
@@ -286,7 +255,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#D3D3D3",
   },
   cateView: {
-    width: "95%",
     marginTop: 15,
   },
   cateButtonView: {
@@ -310,18 +278,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   filterView: {
-    width: "95%",
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 15,
+    marginTop:25,
+    marginBottom: 15
   },
   btnFilter: {
-    width: "30%",
+    width: 120,
     height: 30,
-    backgroundColor: "#D3D3D3",
+    backgroundColor: "#E4E4E4",
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 25,
+    borderRadius: 10,
   },
   txtBtnFilter: {
     fontSize: 16,
@@ -329,28 +297,24 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   listProduct: {
-    width: "95%",
     alignItems: "center",
     marginTop: 10,
   },
   buttonSeeAll: {
-    width: "95%",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#D3D3D3",
+    backgroundColor: "#E4E4E4",
     height: 40,
-    borderRadius: 20,
+    borderRadius: 10,
     marginBottom: 15,
   },
   banner: {
     marginBottom: 30,
-    width: '100%',
     alignItems:'center'
   },
   bannerImage: {
     width: 400,
     height: 200,
     borderRadius: 20,
-    width:'95%'
   },
 });

@@ -16,3 +16,13 @@ export const categorySelector = selector({
         }
     }
 })
+
+export const categoryState = atom({
+    key:"categoryState",
+    default:{
+        _id: "",
+        name:"",
+        description:"",
+        image:""
+    }
+})

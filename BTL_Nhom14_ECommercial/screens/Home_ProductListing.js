@@ -3,7 +3,7 @@ import {Text, View, Pressable, Image, FlatList, StyleSheet, ScrollView, TextInpu
 import stara from '../images/star.png'
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { fetchAPIProduct, ProductDetail } from '../atoms/ProductAtom';
-import {categorySelector} from '../atoms/CategoryAtoms.js'
+import {categorySelector, categoryState} from '../atoms/CategoryAtoms.js'
 import {FontAwesome6, FontAwesome, FontAwesome5} from '@expo/vector-icons'
 import SearchBar from '../components/SearchBar.js';
 
@@ -15,11 +15,16 @@ export default function Home_ProductListing ({navigation}){
     const listCaterory = useRecoilValue(categorySelector)
     const [startCate, setStartCate] = useState(0);
     const [endCate, setEndCate] = useState(3);
+    const [, setCategoryDetail] = useRecoilState(categoryState);
 
 
     const renderCategory = ({item}) =>{
         return(
-            <Pressable style={{alignItems:'center', width:130}}>
+            <Pressable style={{alignItems:'center', width:130}} onPress={() => {
+                setCategoryDetail(item)
+                navigation.replace("Product_ListView")
+
+                }}>
             <Image source={{uri:item.image}} style={{width: 80, height: 80, borderRadius: 40, borderWidth: 2, borderColor:'#09D1C7'}}/>
             <Text style={{fontWeight:'bold'}}>{item.name}</Text>
         </Pressable>
@@ -41,7 +46,7 @@ export default function Home_ProductListing ({navigation}){
                 <View style={{flex:6, justifyContent:"center", alignItems:"center"}}>
                     <Image
                         source={{uri:item.image}}
-                        style={{width:90, height:90}}
+                        style={{width:120, height:120}}
                     />
                 </View>
                 <View style={{flex:2, justifyContent:"center", marginLeft:20}}>
@@ -82,13 +87,13 @@ export default function Home_ProductListing ({navigation}){
 
             <View style={{flexDirection:'row', alignItems:'center'}}>
             <FontAwesome name='shopping-cart' size={30} color={'#09D1C7'}/>
-                <Image source={require('../images/ima.png')} style={{width: 40, height: 40, borderRadius:20, marginRight: 10, marginLeft: 10}}/>
+                <Image source={require('../images/ima.png')} style={{width: 20, height: 20, borderRadius:20, marginRight: 10, marginLeft: 10}}/>
               
             </View>
             
         </View>
        
-        <View style={{flex: 1, marginTop:13, flexDirection:'row', alignItems:'center', marginLeft: 12}}>
+        <View style={{flex: 1,width:'95%', marginTop:13, flexDirection:'row', alignItems:'center', marginLeft: 12}}>
          <SearchBar/>
         </View>
         
