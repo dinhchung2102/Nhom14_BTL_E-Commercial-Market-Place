@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {Text, View, Pressable, Image, FlatList, StyleSheet, ScrollView, TextInput} from 'react-native';
+import {Text, View, Pressable, Image, FlatList, StyleSheet, ScrollView, TextInput, SafeAreaView} from 'react-native';
 import stara from '../images/star.png'
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { fetchAPIProduct, ProductDetail } from '../atoms/ProductAtom';
@@ -31,14 +31,14 @@ export default function Home_ProductListing ({navigation}){
                         {item.name}
                     </Text>
                 </View>
-                <View style={{flex:2, flexDirection:"row", alignItems:"center"}}>
-                    <Image
-                        source={require("../images/star.png")}
-                        style={{width:20, height:20, marginLeft:20}}
-                    />
-                    <Text style={{fontSize:13, marginLeft:5}}>
+                <View style={{flex:2, flexDirection:"row", alignItems:"center", justifyContent:'space-between', borderTopWidth: 0.5}}>
+                    <View style={{flexDirection:'row', alignItems:"center", marginLeft:3}}>
+                    <FontAwesome name='star' size={20} color={'#FFD167'} />
+                    <Text style={{fontSize:13}}>
                         {item.stars}
                     </Text>
+                    </View>
+                    
                     <Text style={styles.price}>
                         ${item.price}
                     </Text>
@@ -47,8 +47,9 @@ export default function Home_ProductListing ({navigation}){
         </Pressable>
     )
   return(
+    <SafeAreaView style={{marginTop: 40}}>
     <ScrollView>
-        <View style={{flex: 1, height:1000, marginTop:50, backgroundColor:"#FFFFFF"}}>
+        <View style={{flex: 1, height:1000, backgroundColor:"#FFFFFF"}}>
         <View style={{flex: 1, flexDirection: 'row', alignItems:'center', justifyContent:'space-between'}}>
             <View style={{flexDirection:'row', alignItems:'center'}}>
             <Image
@@ -66,7 +67,7 @@ export default function Home_ProductListing ({navigation}){
             
         </View>
        
-        <View style={{flex: 1, marginTop:5, flexDirection:'row', alignItems:'center', marginLeft: 12}}>
+        <View style={{flex: 1, marginTop:13, flexDirection:'row', alignItems:'center', marginLeft: 12}}>
          <SearchBar/>
         </View>
         
@@ -193,6 +194,7 @@ export default function Home_ProductListing ({navigation}){
         </View>
     </View>
     </ScrollView>
+    </SafeAreaView>
     
   )
 }
@@ -272,12 +274,15 @@ const styles = StyleSheet.create({
         width:130,
         height:150,
         margin:8,
-        backgroundColor:"#F8F7F7"
+        backgroundColor:"white",
+        borderRadius:15, 
+        borderWidth: 1,
+        borderColor:'grey'
     },
     price:{
        color:"#11D5EB",
-       marginLeft:20,
-       fontWeight:"700"
+       fontWeight:"700",
+       marginRight:3
     },
     footer:{
         flex: 2, flexDirection:"row", justifyContent:"space-between", alignItems:"center",
