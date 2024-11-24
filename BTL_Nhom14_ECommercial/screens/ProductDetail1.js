@@ -22,11 +22,15 @@ import { FontAwesome, AntDesign } from "@expo/vector-icons";
 export default function ProductDetail1({ navigation }) {
   const [productDetail, setProductDetail] = useRecoilState(ProductDetail);
   const dataProducts = useRecoilValue(fetchAPIProduct);
-  const categoryDetail = useRecoilValue(categoryState);
+  const [categoryDetail, setCategoryDetail] = useRecoilState(categoryState);
 
   const filteredProducts = dataProducts.filter(
     (product) => product.category_id === productDetail.category_id
   );
+
+  const handlePressSeeAllProduct = () =>{
+    setCategoryDetail(filteredProducts[0]._id)
+  }
 
   const renderItem = ({ item }) => (
     <Pressable
@@ -41,19 +45,19 @@ export default function ProductDetail1({ navigation }) {
         >
           <Image
             source={{ uri: item.image }}
-            style={{ width: 70, height: 70 }}
+            style={{ width: 100, height: 100 }}
           />
         </View>
-        <View style={{ flex: 2, justifyContent: "center", marginLeft: 20 }}>
+        <View style={{ flex: 2, justifyContent: "center", marginLeft: 20, alignItems:'center' }}>
           <Text>{item.name}</Text>
         </View>
-        <View style={{ flex: 2, flexDirection: "row", alignItems: "center" }}>
-          <Image
-            source={require("../images/star.png")}
-            style={{ width: 20, height: 20, marginLeft: 20 }}
-          />
-          <Text style={{ fontSize: 13, marginLeft: 5 }}>{item.rate}</Text>
-          <Text style={styles.price1}>{item.price}</Text>
+        <View style={{ flex: 2, flexDirection: "row", alignItems: "center", justifyContent:'space-between'}}>
+            <View style={{flexDirection:'row', alignItems:'center', marginLeft: 5}}>
+            <FontAwesome name="star" color={'#FFD167'} size={18} />
+            <Text style={{ fontSize: 13}}>{item.stars}</Text>
+            </View>
+          
+          <Text style={styles.price1}>${item.price}</Text>
         </View>
       </View>
     </Pressable>
@@ -87,15 +91,9 @@ export default function ProductDetail1({ navigation }) {
               <Pressable>
                 <AntDesign name="shoppingcart" size={30} color={"grey"} />
               </Pressable>
-              <Image
-                source={require("../images/ima.png")}
-                style={{
-                  marginLeft: 10,
-                  width: 40,
-                  height: 40,
-                  borderRadius: 40,
-                }}
-              />
+              <Pressable style={{marginLeft:10}}>
+                <FontAwesome name="commenting-o" size={28} color={'grey'}/>
+              </Pressable>
             </View>
           </View>
 
@@ -192,9 +190,12 @@ export default function ProductDetail1({ navigation }) {
           </View>
           <View style={{ flex: 6 }}>
             <View style={{ flex: 3 }}>
-              <View style={{ flex: 1, marginTop: 15, flexDirection: "row" }}>
+              <View style={{ flex: 1, marginTop: 15, flexDirection: "row", justifyContent:'space-between' }}>
                 <Text style={styles.txt1}>Reviews</Text>
-                <Text style={styles.see}>See all </Text>
+                <Pressable style={{alignItems:'center', justifyContent:'center'}}>
+                  <Text style={styles.see}>See all </Text>
+                </Pressable>
+                
               </View>
               <View style={{ flex: 4 }}>
                 <Image
@@ -228,7 +229,7 @@ export default function ProductDetail1({ navigation }) {
                       }}
                     />
                   </View>
-                  <View style={{ flex: 8 }}>
+                  <View style={{ flex: 8}}>
                     <Text style={styles.name}>Jevon Raynor</Text>
                     <Text style={styles.mota}>The girl likes singing </Text>
                   </View>
@@ -236,20 +237,19 @@ export default function ProductDetail1({ navigation }) {
                     <Text style={styles.mota}>A day ago</Text>
                   </View>
                 </View>
-                <View style={{ flex: 4, flexDirection: "row" }}>
+                <View style={{ flex: 4, flexDirection: "row", marginTop: 20 }}>
                   <View style={{ flex: 4 }}>
                     <Image
                       source={require("../images/pf2.png")}
                       style={{
                         marginLeft: 30,
                         borderRadius: 40,
-                        marginRight: 20,
                         width: 50,
                         height: 50,
                       }}
                     />
                   </View>
-                  <View style={{ flex: 8 }}>
+                  <View style={{ flex: 8, marginBottom: 20}}>
                     <Text style={styles.name}>Jason D.</Text>
                     <Text style={styles.mota}>
                       His favorite song is Reality
@@ -262,9 +262,14 @@ export default function ProductDetail1({ navigation }) {
               </View>
             </View>
             <View style={{ flex: 4 }}>
-              <View style={{ flex: 1, marginTop: 10, flexDirection: "row" }}>
+              <View style={{ flex: 1, marginTop: 10, flexDirection: "row", justifyContent:'space-between' }}>
                 <Text style={styles.txt1}>Relevant products</Text>
-                <Text style={styles.see}>See all </Text>
+                <Pressable onPress={() =>{navigation.navigate("Product_ListView")
+                  handlePressSeeAllProduct();
+                }}>
+                  <Text style={styles.see}>See all </Text>
+                </Pressable>
+                
               </View>
               <View style={{ flex: 5 }}>
                 <FlatList
@@ -359,7 +364,7 @@ const styles = StyleSheet.create({
   see: {
     fontSize: 14,
     fontWeight: "500",
-    marginLeft: 80,
+    marginRight: 10,
     marginTop: 10,
     color: "#A4A9A8",
   },
@@ -380,13 +385,15 @@ const styles = StyleSheet.create({
   item: {
     flex: 1,
     width: 130,
-    height: 150,
+    height: 200,
     margin: 8,
-    backgroundColor: "#F8F7F7",
+    backgroundColor: "white",
+    borderRadius:10,
+    borderWidth: 1
   },
   price1: {
     color: "#11D5EB",
-    marginLeft: 20,
+    marginRight: 5,
     fontWeight: "700",
   },
   view1: {
