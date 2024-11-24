@@ -13,28 +13,84 @@ function Register({ navigation }) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const handleSubmit = () => {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex kiểm tra email hợp lệ
-
-      if (!username || !password || !confirmPassword || !phoneNumber || !address || !email || !name) {
-        Alert.alert('Error', 'Please enter complete information.');
+  const handleSubmit = async () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex kiểm tra email hợp lệ
+  
+    // Kiểm tra các trường nhập vào
+    if (!username || !password || !confirmPassword || !phoneNumber || !address || !email || !name) {
+      Alert.alert('Error', 'Please enter complete information.');
+      return;
+    }
+  
+    // Kiểm tra định dạng email
+    if (!emailRegex.test(email)) {
+      Alert.alert('Error', 'Invalid email.');
+      return;
+    }
+  
+    // Kiểm tra mật khẩu và mật khẩu xác nhận có trùng khớp không
+    if (password !== confirmPassword) {
+      Alert.alert('Error', 'Password and Confirm Password are not the same.');
+      return;
+    }
+  
+    try {
+      // Bước 1: Gọi API tạo người dùng
+      const userResponse = await fetch('http://192.168.100.70:5000/api/users/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: name,
+          email: email,
+          phone: phoneNumber,
+          address: address,
+        }),
+      });
+  
+      const userData = await userResponse.json();
+      console.log(userData);
+      
+  
+      if (!userResponse.ok) {
+        Alert.alert('Error', userData.message || 'Failed to create user.');
         return;
       }
-
-      if (!emailRegex.test(email)) {
-        Alert.alert('Error', 'Invalid email.');
-        return;
+  
+      // Lấy userId từ phản hồi trả về
+      const userId = userData.user._id; // Giả sử API trả về ID của người dùng mới tạo
+      console.log(userId);
+      
+  
+      // Bước 2: Gọi API tạo tài khoản mới, không cần truyền role (sẽ được gán mặc định là 'user' ở backend)
+      const accountResponse = await fetch('http://192.168.100.70:5000/api/accounts/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          password,
+          user: userId, 
+        }),
+      });
+  
+      const accountData = await accountResponse.json();
+  
+      // Kiểm tra kết quả từ API tạo tài khoản
+      if (accountResponse.ok) {
+        Alert.alert('Success', 'Registration successful!');
+        navigation.navigate('Login'); // Điều hướng đến trang đăng nhập sau khi đăng ký thành công
+      } else {
+        Alert.alert('Error', accountData.message || 'Failed to create account.');
       }
-
-      if (password !== confirmPassword) {
-        Alert.alert('Error', 'Password and Confirm Password are not the same.');
-        return;
-      }
-
-      Alert.alert('Successful registration');
-      navigation.navigate('Login');
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Error', 'Something went wrong. Please try again later.');
+    }
   };
-
+  
   return (
     <ImageBackground
       source={{
