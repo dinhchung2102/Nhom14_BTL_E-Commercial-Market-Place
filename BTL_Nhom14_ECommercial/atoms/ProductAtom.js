@@ -1,4 +1,5 @@
 import { atom, selector } from "recoil";
+import { categoryState } from "./CategoryAtoms";
 
 export const fetchAPIProduct = selector({
   key: "fetchAPIProduct",
@@ -37,3 +38,12 @@ export const ProductType = atom({
   key:"ProductType",
   default:ProductDetail.type
 })
+
+export const ProductFilterByCate = selector({
+  key: "ProductFilterByCate",
+  get: ({ get }) => {
+    const products = get(fetchAPIProduct); 
+    const category = get(categoryState);  
+    return products.filter((item) => item.category_id === category._id);
+  },
+});

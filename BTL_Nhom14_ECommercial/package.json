@@ -24,6 +24,7 @@
     "react-native": "0.76.2",
     "react-native-image-picker": "^7.1.2",
     "react-native-linear-gradient": "^2.8.3",
+    "react-native-swiper": "^1.6.0",
     "react-native-web": "~0.19.10",
     "recoil": "^0.7.7"
   },
