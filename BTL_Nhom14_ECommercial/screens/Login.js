@@ -1,20 +1,44 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Pressable, Alert  } from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 function Login({navigation}) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    const isCorrect = true;
 
-    const handlePress = () => {
-        if (isCorrect) {// khi nhập username và password đúng
-          // Điều hướng tới màn hình 'Home_ProductListing' khi isCorrect là true
-          navigation.navigate('Home_ProductListing');
-        } else {
-          // Nếu isCorrect là false, bạn có thể thực hiện hành động khác
-          console.log(' Username or Password is incorrect');
+    const handleLogin = async () => {
+        if (!username || !password) {
+          Alert.alert('Error', 'Please enter both username and password');
+          return;
+        }
+    
+        try {
+          const response = await fetch('http://192.168.100.70:5000/api/accounts/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              username,
+              password,
+            }),
+          });
+    
+          const data = await response.json();
+    
+          if (response.ok) {
+            await AsyncStorage.setItem('token', data.token);
+    
+            navigation.navigate('Home_ProductListing');
+          } else {
+            Alert.alert('Error', data.message || 'Failed to log in');
+          }
+        } catch (error) {
+          console.error(error);
+          Alert.alert('Error', 'Something went wrong. Please try again.');
         }
       };
     
@@ -71,7 +95,7 @@ function Login({navigation}) {
         </View>
 
         <Pressable
-            onPress={handlePress}
+            onPress={handleLogin}
             style={{
             backgroundColor: '#213A58',
             padding: 10,
