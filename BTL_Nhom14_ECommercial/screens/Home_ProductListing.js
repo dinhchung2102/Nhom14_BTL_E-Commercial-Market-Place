@@ -5,6 +5,7 @@ import { fetchAPIProduct, ProductDetail } from '../atoms/ProductAtom';
 import { FontAwesome } from '@expo/vector-icons';
 import SearchBar from '../components/SearchBar.js';
 import Swiper_Cate from '../components/Swiper_Cate.js';
+import Footer from '../components/Footer.js';
 
 export default function Home_ProductListing({ navigation }) {
   const listProduct = useRecoilValue(fetchAPIProduct);
@@ -92,25 +93,11 @@ export default function Home_ProductListing({ navigation }) {
             />
           </View>
 
-          <View style={styles.footer}>
-            <Pressable onPress={() => navigation.navigate('Home_ProductListing')}>
-              <Image source={require('../images/home1.png')} style={styles.footerIcon} />
-            </Pressable>
-            <Pressable>
-              <Image source={require('../images/s.png')} style={styles.footerIcon} />
-            </Pressable>
-            <Pressable>
-              <Image source={require('../images/f.png')} style={styles.footerIcon} />
-            </Pressable>
-            <Pressable onPress={() => navigation.navigate('Feedback')}>
-              <Image source={require('../images/i.png')} style={styles.footerIcon} />
-            </Pressable>
-            <Pressable>
-              <Image source={require('../images/a.png')} style={styles.footerIcon} />
-            </Pressable>
-          </View>
+          
         </View>
+       
       </ScrollView>
+      <Footer/>
     </SafeAreaView>
   );
 }
@@ -122,7 +109,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     height: 1000,
-    backgroundColor: '#FFFFFF'
+    backgroundColor: '#FFFFFF',
+    marginBottom: 60
   },
   header: {
     flex: 1,

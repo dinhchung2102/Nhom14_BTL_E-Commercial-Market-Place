@@ -16,6 +16,7 @@ import SearchBar from "../components/SearchBar";
 import { categoryState } from "../atoms/CategoryAtoms";
 import { ProductFilterByCate } from "../atoms/ProductAtom";
 import Swiper_Cate from "../components/Swiper_Cate";
+import Footer from "../components/Footer";
 
 export default function Product_ListView({ navigation }) {
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
@@ -150,6 +151,7 @@ export default function Product_ListView({ navigation }) {
           />
         </View>
       </ScrollView>
+      <Footer/>
     </SafeAreaView>
   );
 }
@@ -257,7 +259,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   banner: {
-    marginBottom: 30,
+    marginBottom: 80,
     alignItems: "center",
   },
   bannerImage: {
