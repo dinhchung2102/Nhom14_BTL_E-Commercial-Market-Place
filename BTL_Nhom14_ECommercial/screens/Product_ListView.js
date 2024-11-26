@@ -17,6 +17,7 @@ import { categoryState } from "../atoms/CategoryAtoms";
 import { ProductFilterByCate } from "../atoms/ProductAtom";
 import Swiper_Cate from "../components/Swiper_Cate";
 import Footer from "../components/Footer";
+import { addToCart } from "../storage/cartStorage";
 
 export default function Product_ListView({ navigation }) {
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
@@ -81,7 +82,7 @@ export default function Product_ListView({ navigation }) {
         <Text style={styles.productPrice}>{item.price}$</Text>
       </View>
       <Pressable
-        onPress={() => navigation.navigate("Checkout_Cart")}
+        onPress={() =>{addToCart(item)}}
         style={styles.addToCartButton}
       >
         <FontAwesome name="plus-circle" size={30} color={"#09D1C7"} />
@@ -105,7 +106,7 @@ export default function Product_ListView({ navigation }) {
             <Text style={styles.headerType}>{categoryDetail.name}</Text>
           </View>
           <View style={styles.headerRight}>
-            <Pressable style={styles.headerButton}>
+            <Pressable style={styles.headerButton} onPress={()=>{navigation.navigate("Checkout_Cart")}}>
               <AntDesign name="shoppingcart" color={"grey"} size={30} />
             </Pressable>
             <Pressable style={styles.headerButton}>

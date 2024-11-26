@@ -1,15 +1,3 @@
-
-// import { StatusBar } from 'expo-status-bar';
-// import { StyleSheet, Text, View } from 'react-native';
-// import { NavigationContainer } from '@react-navigation/native';
-// import { createNativeStackNavigator } from '@react-navigation/native-stack';
-// const Stack = createNativeStackNavigator();
-
-// import HomeScreen from './screens/Home_ProductListing'
-// import Filter from './screens/Filter';
-// import Feedback from './screens/Feedback';
-// import ProductDetail1 from './screens/ProductDetail1';
-
 import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";

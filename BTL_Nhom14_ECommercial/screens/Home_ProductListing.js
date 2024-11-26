@@ -15,7 +15,12 @@ export default function Home_ProductListing({ navigation }) {
     <Pressable
       onPress={() => {
         setProductDetail(item);
-        navigation.navigate('ProductDetail1');
+        if(item.size.length != 0){
+          navigation.navigate('ProductDetail2');
+        }
+        else{
+          navigation.navigate("ProductDetail1")
+        }
       }}
     >
       <View style={styles.item}>
