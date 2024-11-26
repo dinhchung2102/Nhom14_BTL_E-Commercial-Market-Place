@@ -150,13 +150,13 @@ const styles = StyleSheet.create({
     marginLeft: 12
   },
   promotions: {
-    flex: 7,
+    flex: 6,
     justifyContent: 'center',
     alignItems: 'center'
   },
   promotionItem: {
     marginTop: 10,
-    flex: 4,
+    flex: 3,
     backgroundColor: '#F5F2FD',
     borderTopLeftRadius: 5,
     width: 300,
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
   },
   promotionImage: {
     width: 145,
-    height: 100
+    height: 100, marginRight:10
   },
   recommendedHeader: {
     flex: 1,
