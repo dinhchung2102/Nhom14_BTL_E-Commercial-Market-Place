@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
 export const getCart = async () => {
   try {
     const cart = await AsyncStorage.getItem('cart');
@@ -19,44 +20,26 @@ export const saveCart = async (cart) => {
   }
 };
 
-// Thêm sản phẩm vào giỏ hàng
-export const addToCart = async (product) => {
-    try {
-      let cart = await getCart();  
-      const productIndex = cart.findIndex(item => item._id === product._id); 
-  
-      if (productIndex !== -1) {
-        cart[productIndex].quantity += 1;
-      } else {
-        cart.push({
-          ...product,
-          quantity: product.quantity || 1  
-        });
-      }
-  
-      await saveCart(cart); 
-    } catch (error) {
-      console.error('Error adding to cart: ', error);
+export const addToCart = async (product, setCart) => {
+  try {
+    let cart = await getCart();  
+    const productIndex = cart.findIndex(item => item._id === product._id);  
+    if (productIndex !== -1) {
+      cart[productIndex].quantity += 1;  
+    } else {
+      cart.push({
+        ...product,
+        quantity: 1  
+      });
     }
-  };
 
-  export const calculateTotal = async () => {
-    try {
-      const cart = await getCart();
+    await saveCart(cart); 
+    setCart(cart);  
+  } catch (error) {
+    console.error('Error adding to cart: ', error);
+  }
+};
 
-      const total = cart.reduce((sum, item) => {
-        if (item.quantity && item.price) {
-          return sum + (item.quantity * item.price);  
-        }
-        return sum;
-      }, 0); 
-  
-      return total;  
-    } catch (error) {
-      console.error('Error calculating total: ', error);
-      return 0; 
-    }
-  };
 
 export const clearAsyncStorage = async () => {
   try {

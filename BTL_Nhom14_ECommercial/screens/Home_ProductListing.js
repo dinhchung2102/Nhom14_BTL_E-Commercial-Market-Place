@@ -2,14 +2,27 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, Pressable, Image, FlatList, StyleSheet, ScrollView, TextInput, SafeAreaView } from 'react-native';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { fetchAPIProduct, ProductDetail } from '../atoms/ProductAtom';
-import { FontAwesome } from '@expo/vector-icons';
+import { AntDesign, FontAwesome } from '@expo/vector-icons';
 import SearchBar from '../components/SearchBar.js';
 import Swiper_Cate from '../components/Swiper_Cate.js';
 import Footer from '../components/Footer.js';
+import { cartQuantity, cartState, cartStateFromStorage } from '../atoms/CartAtom.js';
+import { getCart } from '../storage/cartStorage.js';
 
 export default function Home_ProductListing({ navigation }) {
   const listProduct = useRecoilValue(fetchAPIProduct);
   const [, setProductDetail] = useRecoilState(ProductDetail);
+  const cartQtt = useRecoilValue(cartQuantity);
+  const [,setCart] = useRecoilState(cartState);
+
+  useEffect(() => {
+    const fetchCartData = async () => {
+      const cartData = await getCart();  
+      setCart(cartData);
+    };
+
+    fetchCartData();  
+  }, []);  
 
   const renderItem = ({ item }) => (
     <Pressable
@@ -52,8 +65,11 @@ export default function Home_ProductListing({ navigation }) {
             </View>
 
             <View style={styles.headerRight}>
-              <FontAwesome name='shopping-cart' size={30} color={'#09D1C7'} />
-              <Image source={require('../images/ima.png')} style={styles.cartImage} />
+              <Pressable style={{flexDirection:'row',alignItems:'center'}} onPress={()=>{navigation.navigate("Checkout_Cart")}}>
+                <AntDesign name='shoppingcart' size={30} color={'#09D1C7'}/>
+                <Text style={{position:'absolute',zIndex: 1, backgroundColor:'red', width: 20, height: 20, borderRadius: 10,marginLeft: 15, top: 0, color: 'white', textAlign:'center'}}>{cartQtt}</Text>
+              </Pressable>
+              <FontAwesome name='commenting-o' size={27} color={'#09D1C7'} style={{marginLeft: 10}}/>
             </View>
           </View>
 
@@ -113,15 +129,15 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    height: 1000,
     backgroundColor: '#FFFFFF',
-    marginBottom: 60
+    marginBottom: 60,
+    height: 1000
   },
   header: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   headerLeft: {
     flexDirection: 'row',
@@ -137,7 +153,8 @@ const styles = StyleSheet.create({
   },
   headerRight: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginRight: 10,
   },
   cartImage: {
     width: 20,
@@ -149,7 +166,6 @@ const styles = StyleSheet.create({
   searchContainer: {
     flex: 1,
     width: '95%',
-    marginTop: 13,
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 12

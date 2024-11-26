@@ -18,11 +18,15 @@ import {
 } from "../atoms/ProductAtom";
 import { categoryState } from "../atoms/CategoryAtoms";
 import { FontAwesome, AntDesign } from "@expo/vector-icons";
+import { addToCart, getCart } from "../storage/cartStorage";
+import { cartQuantity, cartState } from "../atoms/CartAtom";
 
 export default function ProductDetail1({ navigation }) {
   const [productDetail, setProductDetail] = useRecoilState(ProductDetail);
   const dataProducts = useRecoilValue(fetchAPIProduct);
-  const [categoryDetail, setCategoryDetail] = useRecoilState(categoryState);
+  const [, setCategoryDetail] = useRecoilState(categoryState);
+  const cartQtt= useRecoilValue(cartQuantity)
+  const [, setCart] = useRecoilState(cartState);
 
   const filteredProducts = dataProducts.filter(
     (product) => product.category_id === productDetail.category_id
@@ -31,6 +35,15 @@ export default function ProductDetail1({ navigation }) {
   const handlePressSeeAllProduct = () =>{
     setCategoryDetail(filteredProducts[0]._id)
   }
+
+  useEffect(() => {
+    const fetchCartData = async () => {
+      const cartData = await getCart();  
+      setCart(cartData);
+    };
+
+    fetchCartData();  
+  }, []);  
 
   const renderItem = ({ item }) => (
     <Pressable
@@ -64,6 +77,7 @@ export default function ProductDetail1({ navigation }) {
   );
   const [isOn, setIsOn] = useState(false); // Trạng thái On/Off
   const translateX = useState(new Animated.Value(0))[0]; // Vị trí của nút trượt
+  const [notifyBell, setNotifyBell] = useState('bell-slash');
   //Công tắc bật tắt thông báo
   const toggleSwitch = () => {
     if (isOn) {
@@ -73,6 +87,7 @@ export default function ProductDetail1({ navigation }) {
         duration: 200,
         useNativeDriver: true,
       }).start();
+      setNotifyBell('bell-slash')
     } else {
       // Chuyển sang trạng thái On
       Animated.timing(translateX, {
@@ -80,36 +95,35 @@ export default function ProductDetail1({ navigation }) {
         duration: 200,
         useNativeDriver: true,
       }).start();
+      setNotifyBell("bell")
     }
     setIsOn(!isOn); // Đảo trạng thái
   };
   return (
       
         <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFFFF", marginTop: 40 }}>
-            <ScrollView>
+            <ScrollView style={{marginBottom: 125}}>
           <View
             style={{
               flex: 1,
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "space-between",
-              width:'95%'
+              width:'95%',
             }}
           >
             <View style={{ flexDirection: "row", alignItems: "center"}}>
               <Pressable
-                onPress={() => navigation.navigate("Home_ProductListing")}
+                onPress={() => navigation.replace("Home_ProductListing")}
               >
-                <Image
-                  source={require("../images/back.png")}
-                  style={{ marginLeft: 10 }}
-                />
+                <FontAwesome name="angle-left" size={22} style={{marginLeft: 10}}/>
               </Pressable>
               <Text style={styles.deal}>{productDetail.name}</Text>
             </View>
 
             <View style={{ flexDirection: "row", alignItems: "center"}}>
-              <Pressable>
+              <Pressable onPress={()=>{navigation.navigate("Checkout_Cart")}}>
+              <Text style={{position:'absolute',zIndex: 1, backgroundColor:'red', width: 20, height: 20, borderRadius: 10,marginLeft: 15, top: 0, color: 'white', textAlign:'center'}}>{cartQtt}</Text>
                 <AntDesign name="shoppingcart" size={30} color={"grey"} />
               </Pressable>
               <Pressable style={{marginLeft:10}}>
@@ -220,7 +234,7 @@ export default function ProductDetail1({ navigation }) {
               {/* Phần review  */}
               <View style={{ flex: 4, flexDirection:"row"}}>
                   <View style={styles.averageContainer}>
-                    <Text style={styles.averageText}>4/5</Text>
+                    <Text style={styles.averageText}>{productDetail.stars}/5</Text>
                     <Text style={styles.reviewCount}>(99 reviews)</Text>
                     <View style={{flexDirection:"row", marginTop:5}}>
                     <FontAwesome name="star" color={'#FFD167'} size={18} style={{marginRight:5}} />
@@ -340,23 +354,18 @@ export default function ProductDetail1({ navigation }) {
                   horizontal
                 />
               </View>
-              <View style={{ flex: 4 }}>
+            </View>
+          </View>
+          </ScrollView>
+          <View style={{ position:'absolute',width:'100%', bottom: 0,backgroundColor:'white', borderTopWidth: 1, borderTopColor:'#f0f0f0'}}>
                 <View style={styles.view1}>
-                  <Image
-                    source={require("../images/bell2.png")}
-                    style={{
-                      marginLeft: 10,
-                      borderRadius: 3,
-                      width: 40,
-                      height: 40,
-                    }}
-                  />
-                  <Text style={styles.mota}>Notify me of promotions</Text>
-                  <Pressable onPress={toggleSwitch} style={{marginLeft:80}}>
+                  <FontAwesome name={notifyBell} color={'#09D1C7'} size={30} style={{ width: 30,marginLeft: 10}}/>
+                  <Text style={{fontSize:15, marginLeft: 10, color:'grey'}}>Notify me of promotions</Text>
+                  <Pressable onPress={toggleSwitch} style={{marginLeft: 150, marginRight: 10}}>
                     <View
                       style={[
                         styles.switchContainer,
-                        { backgroundColor: isOn ? '#4CAF50' : '#B0BEC5' },
+                        { backgroundColor: isOn ? '#4CAF50' : '#B0BEC5', borderWidth: 1, width: 55, borderColor:'#f0f0f0' },
                       ]}
                     >
                       <Animated.View
@@ -365,27 +374,18 @@ export default function ProductDetail1({ navigation }) {
                     </View>
                   </Pressable>
                 </View>
-                <View
-                  style={{
-                    marginLeft: 20,
-                    marginRight: 20,
-                    marginTop: 10,
-                    flex: 2,
-                    flexDirection: "row",
-                  }}
-                >
-                  <Image
-                    source={require("../images/fcart.png")}
-                    style={{ width: 50, height: 50 }}
-                  />
+                <View style={styles.viewButton}>
+                  <Pressable style={{flexDirection:'row', alignItems:'center'}} onPress={()=>{addToCart(productDetail, setCart)}}>
+                    <Image
+                      source={require("../images/fcart.png")}
+                      style={{ width: 50, height: 50 }}
+                    />
+                  </Pressable>
                   <Pressable style={styles.butt} onPress={()=>navigation.navigate('Checkout_Cart')}>
                     <Text style={styles.txtBut}>Buy now</Text>
                   </Pressable>
                 </View>
               </View>
-            </View>
-          </View>
-          </ScrollView>
           </SafeAreaView>
      
     
@@ -393,6 +393,16 @@ export default function ProductDetail1({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+
+  
+  viewButton: {
+    marginLeft: 10,
+    marginRight: 10,
+    flex: 2,
+    flexDirection: "row",
+    alignItems:'center',
+    marginBottom: 5
+  },
   deal: {
     fontSize: 16,
     fontWeight: "700",
@@ -466,9 +476,8 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   view1: {
-    marginLeft: 20,
-    marginRight: 20,
-    marginTop: 10,
+    margin: 10,
+    height: 50,
     flex: 2.5,
     borderWidth: 1,
     borderColor: "#A4A9A8",
@@ -479,11 +488,12 @@ const styles = StyleSheet.create({
   butt: {
     marginLeft: 10,
     width: 260,
-    height: 50,
+    height: 45,
     backgroundColor: "#11D5EB",
     borderRadius: 5,
     justifyContent: "center",
     alignItems: "center",
+    flex: 1
   },
   txtBut: {
     color: "white",

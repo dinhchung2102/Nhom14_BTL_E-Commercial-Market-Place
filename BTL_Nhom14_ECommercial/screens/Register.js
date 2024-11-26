@@ -36,7 +36,7 @@ function Register({ navigation }) {
   
     try {
       // Bước 1: Gọi API tạo người dùng
-      const userResponse = await fetch('http://192.168.1.21:5000/api/users/create', {
+      const userResponse = await fetch('http://192.168.100.70:5000/api/users/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

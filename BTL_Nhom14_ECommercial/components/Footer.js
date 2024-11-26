@@ -1,11 +1,13 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native'
 import React from 'react'
 import { FontAwesome } from '@expo/vector-icons';
+import {useNavigation} from '@react-navigation/native'
 
 export default function Footer() {
+  const navigation  = useNavigation();
   return (
     <View style={styles.buttonView}>
-       <Pressable style={styles.button}>
+       <Pressable style={styles.button} onPress={()=>{navigation.replace("Home_ProductListing")}}>
           <FontAwesome name='home' size={30} color={'#15919B'}/>
           <Text style={styles.textButton}>Home</Text>
         </Pressable>
