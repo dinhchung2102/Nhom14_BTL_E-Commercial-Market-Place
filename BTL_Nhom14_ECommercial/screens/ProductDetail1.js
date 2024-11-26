@@ -8,7 +8,7 @@ import {
   StyleSheet,
   TextInput,
   ScrollView,
-  SafeAreaView,
+  SafeAreaView, Animated 
 } from "react-native";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
@@ -62,6 +62,27 @@ export default function ProductDetail1({ navigation }) {
       </View>
     </Pressable>
   );
+  const [isOn, setIsOn] = useState(false); // Trạng thái On/Off
+  const translateX = useState(new Animated.Value(0))[0]; // Vị trí của nút trượt
+  //Công tắc bật tắt thông báo
+  const toggleSwitch = () => {
+    if (isOn) {
+      // Chuyển sang trạng thái Off
+      Animated.timing(translateX, {
+        toValue: 0, // Trượt về trái
+        duration: 200,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      // Chuyển sang trạng thái On
+      Animated.timing(translateX, {
+        toValue: 25, // Trượt sang phải
+        duration: 200,
+        useNativeDriver: true,
+      }).start();
+    }
+    setIsOn(!isOn); // Đảo trạng thái
+  };
   return (
       
         <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFFFF", marginTop: 40 }}>
@@ -195,19 +216,59 @@ export default function ProductDetail1({ navigation }) {
                 <Pressable style={{alignItems:'center', justifyContent:'center'}}>
                   <Text style={styles.see}>See all </Text>
                 </Pressable>
-                
               </View>
-              <View style={{ flex: 4 }}>
-                <Image
-                  source={require("../images/review.png")}
-                  style={{
-                    marginLeft: 30,
-                    borderRadius: 3,
-                    marginRight: 20,
-                    width: 300,
-                    height: 130,
-                  }}
-                />
+              {/* Phần review  */}
+              <View style={{ flex: 4, flexDirection:"row"}}>
+                  <View style={styles.averageContainer}>
+                    <Text style={styles.averageText}>4/5</Text>
+                    <Text style={styles.reviewCount}>(99 reviews)</Text>
+                    <View style={{flexDirection:"row", marginTop:5}}>
+                    <FontAwesome name="star" color={'#FFD167'} size={18} style={{marginRight:5}} />
+                    <FontAwesome name="star" color={'#FFD167'} size={18} style={{marginRight:5}} />
+                    <FontAwesome name="star" color={'#FFD167'} size={18} style={{marginRight:5}} />
+                    <FontAwesome name="star" color={'#FFD167'} size={18} style={{marginRight:5}} />
+                    <FontAwesome name="star" color={'#C4C4C4'} size={18} style={{marginRight:5}} />
+                    </View>
+                  </View>
+
+                  {/* Thanh đánh giá */}
+                  <View style={{flex:5}}>
+                  
+                  <View style={styles.ratingRow}>
+                    <View style={styles.progressBar}>
+                      <View style={[styles.progress, { width: '80%' }]} />
+                    </View>
+                    <Text style={styles.countText}>5</Text>
+                  </View>
+
+                  <View style={styles.ratingRow}>
+                    <View style={styles.progressBar}>
+                      <View style={[styles.progress, { width: '60%' }]} />
+                    </View>
+                    <Text style={styles.countText}>4</Text>
+                  </View>
+
+                  <View style={styles.ratingRow}>
+                    <View style={styles.progressBar}>
+                      <View style={[styles.progress, { width: '37%' }]} />
+                    </View>
+                    <Text style={styles.countText}>3</Text>
+                  </View>
+
+                  <View style={styles.ratingRow}>
+                    <View style={styles.progressBar}>
+                      <View style={[styles.progress, { width: '22%' }]} />
+                    </View>
+                    <Text style={styles.countText}>2</Text>
+                  </View>
+
+                  <View style={styles.ratingRow}>
+                    <View style={styles.progressBar}>
+                      <View style={[styles.progress, { width: '8%' }]} />
+                    </View>
+                    <Text style={styles.countText}>1</Text>
+                  </View>
+                </View>
               </View>
               <View
                 style={{
@@ -282,7 +343,7 @@ export default function ProductDetail1({ navigation }) {
               <View style={{ flex: 4 }}>
                 <View style={styles.view1}>
                   <Image
-                    source={require("../images/bell.png")}
+                    source={require("../images/bell2.png")}
                     style={{
                       marginLeft: 10,
                       borderRadius: 3,
@@ -291,10 +352,18 @@ export default function ProductDetail1({ navigation }) {
                     }}
                   />
                   <Text style={styles.mota}>Notify me of promotions</Text>
-                  <Image
-                    source={require("../images/onoff.png")}
-                    style={{ marginLeft: 70, width: 33, height: 35 }}
-                  />
+                  <Pressable onPress={toggleSwitch} style={{marginLeft:80}}>
+                    <View
+                      style={[
+                        styles.switchContainer,
+                        { backgroundColor: isOn ? '#4CAF50' : '#B0BEC5' },
+                      ]}
+                    >
+                      <Animated.View
+                        style={[styles.circle, { transform: [{ translateX }] }]}
+                      />
+                    </View>
+                  </Pressable>
                 </View>
                 <View
                   style={{
@@ -309,7 +378,7 @@ export default function ProductDetail1({ navigation }) {
                     source={require("../images/fcart.png")}
                     style={{ width: 50, height: 50 }}
                   />
-                  <Pressable style={styles.butt}>
+                  <Pressable style={styles.butt} onPress={()=>navigation.navigate('Checkout_Cart')}>
                     <Text style={styles.txtBut}>Buy now</Text>
                   </Pressable>
                 </View>
@@ -421,5 +490,54 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     textAlign: "center",
     fontSize: 18,
+  },
+  averageContainer: {
+    margin: 20,
+    flex: 4,
+  },
+  averageText: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  reviewCount: {
+    fontSize: 16,
+    color: '#888',
+  },
+  ratingRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 3,
+  },
+  progressBar: {
+    flex: 1,
+    height: 10,
+    backgroundColor: '#e0e0e0',
+    borderRadius: 5,
+    overflow: 'hidden',
+    marginHorizontal: 10,
+  },
+  progress: {
+    height: '100%',
+    backgroundColor: '#FFD700',
+  },
+  countText: {
+    width: 30,
+    fontSize: 14,
+    color: '#555',
+  },
+  switchContainer: {
+    width: 50,
+    height: 30,
+    borderRadius: 15,
+    padding: 2,
+    backgroundColor: '#B0BEC5', // Mặc định màu xám
+    justifyContent: 'center',
+  },
+  circle: {
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    backgroundColor: '#FFFFFF',
   },
 });

@@ -1,10 +1,10 @@
+import React, { useState } from 'react';
 import {
   View,
   Text,
-  SafeAreaView,
   StyleSheet,
-  FlatList,
   Image,
+  FlatList,
   Pressable,
   TextInput,
   ScrollView,
@@ -226,19 +226,78 @@ const styles = StyleSheet.create({
 
   },
   footer: {
-    marginTop: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 10,
+    backgroundColor: '#fff',
   },
-  btnApply: {
-    backgroundColor: "red",
-    height: 40,
-    width: 115,
+  totalText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  checkoutButton: {
+    backgroundColor: '#FF5722',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
     borderRadius: 5,
-    justifyContent: "center",
-    alignItems: "center",
-    marginLeft: 20,
   },
-  textBtnApply: {
-    fontSize: 25,
-    color: "white",
+  checkoutButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
+  emptyCartContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emptyCartText: {
+    fontSize: 18,
+    color: '#888',
+  },
+  list:{
+    marginTop:60,
+    fontSize:17,
+    margin:10,
+    fontWeight:"700",
+    color:"darkorange"
+  },
+  deliveryContainer: {
+  padding: 30,
+  backgroundColor: '#fff',
+  marginBottom: 10,
+},
+deliveryTitle: {
+  fontSize: 16,
+  fontWeight: 'bold',
+  marginBottom: 10,
+},
+radioOption: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  marginVertical: 5,
+},
+radioCircle: {
+  width: 20,
+  height: 20,
+  borderRadius: 10,
+  borderWidth: 2,
+  borderColor: '#ccc',
+  marginRight: 10,
+},
+radioSelected: {
+  backgroundColor: '#4CAF50',
+  borderColor: '#4CAF50',
+},
+radioLabel: {
+  fontSize: 14,
+},
+message: {
+    textAlign: 'center',
+    fontSize: 16,
+    color: 'red',
+    marginTop: 10,
+  },
+
 });

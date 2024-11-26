@@ -4,7 +4,7 @@ export const categorySelector = selector({
     key:"categorySelector",
     get: async({get}) =>{
         try {
-            const response = await fetch('http://192.168.100.70:5000/api/categories');
+            const response = await fetch('http://192.168.1.21:5000/api/categories');
             if(!response.ok){
                 throw new Error("Faild to categories")
             }
