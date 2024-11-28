@@ -14,16 +14,16 @@ import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import { getCart, saveCart } from "../storage/cartStorage";
 import { Checkbox } from "react-native-paper";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { cartQuantity, cartState } from "../atoms/CartAtom";
+import { cartQuantity, cartState, selectedProductsState, totalMoneyState } from "../atoms/CartAtom";
 
 export default function Checkout_Cart({ navigation }) {
   const [cart, setCart] = useRecoilState(cartState);
   const totalQuantity = useRecoilValue(cartQuantity);
 
-  const [totalMoney, setTotalMoney] = useState(0);
-  const [checkedItems, setCheckedItems] = useState([]);
+  const [totalMoney, setTotalMoney] = useRecoilState(totalMoneyState);
+  const [checkedItems, setCheckedItems] = useRecoilState(selectedProductsState);
 
-  const totalCheckedItems = checkedItems.reduce((totalChecked, product_id) => {
+  const totalCheckedItems = checkedItems.flat().reduce((totalChecked, product_id) => {
     const product = cart.find((item) => item._id === product_id);
     if (product) {
       return totalChecked + product.quantity;
@@ -192,7 +192,7 @@ export default function Checkout_Cart({ navigation }) {
             <Text style={styles.totalAmountText}>Total: $ {totalMoney.toFixed(2)}</Text>
           </View>
 
-          <Pressable style={styles.buyNowButton} onPress={() => console.log(checkedItems)}>
+          <Pressable style={styles.buyNowButton} onPress={()=>{navigation.navigate("Checkout_Payment_Method")}}>
             <Text style={styles.buyNowText}>Buy now ({totalCheckedItems})</Text>
           </Pressable>
         </View>

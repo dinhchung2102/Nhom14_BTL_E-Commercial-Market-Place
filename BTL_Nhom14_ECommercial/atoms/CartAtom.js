@@ -11,3 +11,13 @@ export const cartQuantity = selector({
     return cart.reduce((total, item) => total + item.quantity, 0);  
   },
 });
+
+export const selectedProductsState = atom({
+  key:"selectedProductsState",
+  default:[]
+})
+
+export const totalMoneyState = atom({
+  key:"totalMoneyState",
+  default: 0
+})
