@@ -130,6 +130,7 @@ export default function Product_ListView({ navigation }) {
 
         <SearchBar />
 
+        <Text style={{width:'95%', fontSize: 18, fontWeight:'bold', marginTop: 10}}>Categories</Text>
         <Swiper_Cate navigation={navigation} confirm={false} />
 
         <View style={styles.filterView}>

@@ -156,13 +156,13 @@ export default function ProductDetail2({navigation}){
                             style={{width:30,height:30,marginLeft:140}}
                         />     
                     </View>
-                    <View style={{flex:2,borderBottomWidth:1, borderColor:"#C5BCBC", alignItems:"center", flexDirection:"row"}}>
+                    <Pressable onPress={()=>{navigation.navigate("Products")}} style={{flex:2,borderBottomWidth:1, borderColor:"#C5BCBC", alignItems:"center", flexDirection:"row"}}>
                         <Text style={styles.guide}>Review (99)</Text>  
                         <Image
                             source={require("../images/than.png")}
                             style={{width:30,height:30,marginLeft:140}}
                         />      
-                    </View>
+                    </Pressable>
                     <View style={{flex:2, alignItems:"center", justifyContent:"center"}}>
                         <Pressable style={styles.butt}>
                             <Image
