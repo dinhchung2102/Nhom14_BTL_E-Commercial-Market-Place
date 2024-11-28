@@ -33,6 +33,14 @@ const ProductSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  size:{
+    type:Array,
+    required: false
+  },
+  color:{
+    type: Array, 
+    required: false
+  }
 });
 
 // Tạo model cho Product

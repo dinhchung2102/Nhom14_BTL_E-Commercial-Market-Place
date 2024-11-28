@@ -12,16 +12,19 @@ import React, { useState } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { FontAwesome } from "@expo/vector-icons";
 import TextHeader from "../components/TextHeader";
+import { useRecoilValue } from "recoil";
+import { totalMoneyState } from "../atoms/CartAtom";
 
 export default function Checkout_Payment_Method({navigation}) {
   const [isPressed, setIsPressed] = useState(false);
+  const totalMoney = useRecoilValue(totalMoneyState);
   const handleChooseMethod = () => {};
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
         <TextHeader textHeader="Payment" onPress = {() =>{navigation.navigate("Feedback")}} />
         <Text style={{ fontSize: 20, marginTop: 80 }}>TOTAL</Text>
-        <Text style={{ fontSize: 40, fontWeight: "bold" }}>$3,080</Text>
+        <Text style={{ fontSize: 40, fontWeight: "bold" }}>$ {totalMoney}</Text>
 
         <View style={styles.content}>
           <Pressable

@@ -11,8 +11,11 @@ import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { FontAwesome } from "@expo/vector-icons";
 import TextPayment, { TextCardPayment } from "../components/TextPayment";
+import { useRecoilValue } from "recoil";
+import { totalMoneyState } from "../atoms/CartAtom";
 
 export default Checkout_Payment_Success = ({navigation}) => {
+  const totalMoney = useRecoilValue(totalMoneyState);
   return (
     <SafeAreaProvider>
       <ScrollView>
@@ -24,12 +27,12 @@ export default Checkout_Payment_Success = ({navigation}) => {
           </View>
 
           <View style={styles.content}>
-            <TextPayment text = "SubTotal" price = {800} />
-            <TextPayment text = "Tax (10%)" price = {800*0.1} />
+            <TextPayment text = "SubTotal" price = {totalMoney} />
+            <TextPayment text = "Tax (10%)" price = {totalMoney*0.1} />
             <TextPayment text = 'Fee' price = {0}/>
             <TextCardPayment text = "Card" cardNumber = '123456789'/>
             <View style={{flexDirection:'row', alignItems:'center', width:"90%"}}>
-            <TextPayment text = 'Total' price = {800+800*0.1+ 0}/>
+            <TextPayment text = 'Total' price = {totalMoney+totalMoney*0.1+ 0}/>
             <FontAwesome name="check-circle" color={'green'} size={20} style={{marginLeft: 10, flex: 1}}/>
             </View>
             
@@ -60,6 +63,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    backgroundColor:'white'
   },
   //==================================
   header: {

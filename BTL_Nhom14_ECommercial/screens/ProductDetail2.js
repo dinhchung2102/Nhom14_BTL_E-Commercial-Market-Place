@@ -1,54 +1,30 @@
 import React, { useState }  from 'react';
-import {Text, View, Pressable, Image, FlatList, StyleSheet, TextInput,ScrollView} from 'react-native';
+import {Text, View, Pressable, Image, StyleSheet,ScrollView} from 'react-native';
+import { useRecoilValue } from 'recoil';
+import { ProductDetail } from '../atoms/ProductAtom';
 
-const data1 =[
-    {
-      id:"1",
-      image:"https://images.pexels.com/photos/1598508/pexels-photo-1598508.jpeg?auto=compress&cs=tinysrgb&w=600",
-      title:"Shoe",
-      price:"$ 299",
-    },
-    {
-      id:"2",
-      image:"https://images.pexels.com/photos/2070069/pexels-photo-2070069.jpeg?auto=compress&cs=tinysrgb&w=600",
-      title:"Tablet",
-      price:"$ 499",
-    },
-    {
-      id:"3",
-      image:"https://images.pexels.com/photos/5945906/pexels-photo-5945906.jpeg?auto=compress&cs=tinysrgb&w=600",
-      title:"Pear",
-      price:"$ 99",
-    },
-    {
-      id:"4",
-      image:"https://images.pexels.com/photos/333984/pexels-photo-333984.jpeg?auto=compress&cs=tinysrgb&w=600",
-      title:"Television",
-      price:"$ 599",
-    }
-  ]
+export default function ProductDetail2({navigation}){
 
-export default function ProductDetail2({navigation, route}){
-    const {ima} = route.params;
-    const {tit} = route.params;
-    const {pri} = route.params;
-    const {des} = route.params;
-    const {type} = route.params;
+    const productDetail = useRecoilValue(ProductDetail);
+   
     //useState tăng giảm sô lượng 
     const [count, setCount] = useState(1);
     //useState giá, thành tiền
-    const [price, setTotal] = useState(pri);
+    const [price, setTotal] = useState(productDetail.price);
     const increment = () => {
         setCount(count + 1);
     };
     const decrement = () => {
-        setCount(count - 1);
+        if(count > 1){
+            setCount(count - 1);
+        }
     };
     //chọn size
     const [selectedSize, setSelectedSize] = useState(null);
 
-    const sizes = ['XS','S', 'M', 'L', 'XL'];
-    
+    const sizes = productDetail.size;
+    const colors = productDetail.color;
+
     return (
         <ScrollView>
             <View style={{flex:1, height:1150, backgroundColor:"#FFFFFF" }}>
@@ -61,12 +37,12 @@ export default function ProductDetail2({navigation, route}){
                             style={{marginLeft:10}}
                         />
                     </Pressable>
-                <Text style={styles.deal}>{tit}</Text>
+                <Text style={styles.deal}>titkle</Text>
                 </View>
                 <View style={{flex:5, alignItems:"center", justifyContent:"center"}}>
                         <Image
-                            source={{uri:ima}}
-                            style={{width:320, height:180, borderRadius:6}}
+                            source={{uri:productDetail.image}}
+                            style={{width:320, height:180, borderRadius:6, backgroundColor:'red'}}
                         />
                 </View>
                 <View style={{flex:2, flexDirection:"row"}}>
@@ -89,30 +65,34 @@ export default function ProductDetail2({navigation, route}){
                 </View>
                 <View style={{flex:10}}>
                     <View style={{flex:1.5, flexDirection:"row", alignItems:"center"}}>
-                        <Text style={styles.price}>$2,99</Text>
+                        <Text style={styles.price}>${productDetail.price}</Text>
                         <Pressable style={styles.press1}>
                             <Text style={styles.txt1}>Buy 1 get 1</Text>
                         </Pressable>
                     </View>
                     <View style={{flex:1.5, flexDirection:"row", alignItems:"center"}}>
-                        <Text style={styles.txt2}>Hoodie shirt</Text>
+                        <Text style={styles.txt2}>{productDetail.name}</Text>
                         <Image
                                 source={require('../images/star.png')}
                                 style={{marginLeft:110, width:20, height:20}}
                             />
-                            <Text style={{marginLeft:5}}>4.5</Text>
+                            <Text style={{marginLeft:5}}>{productDetail.stars}</Text>
                     </View>
                     <View style={{flex:1}}>
-                        <Text style={styles.txt3}>African american man with african hairstyle wearing hoodie standing over isolated yellow background</Text>
+                        <Text style={styles.txt3}>{productDetail.description}</Text>
                     </View>
                     <View style={{flex:0.5}}></View>
                     <View style={{flex:8}}>
                         <View style={{flex:2}}>
                             <Text style={styles.size}>Color</Text>
                             <View style={{flex:1, flexDirection:"row", alignItems:"center"}}>
-                                <Pressable style={styles.color1}/>
-                                <Pressable style={styles.color2}/>
-                                <Pressable style={styles.color3}/>
+                            {/* Lặp qua mảng colors và render mỗi item */}
+                            {colors.map((color, index) => (
+                            <Pressable
+                                key={index}
+                                style={[styles.color1, { backgroundColor: color }]} // Thiết lập màu nền cho từng ô
+                            />
+      ))}
                             </View>
                         </View>
                         <View style={{flex:2}}>
@@ -207,7 +187,7 @@ const styles = StyleSheet.create({
         fontSize:20, fontWeight:"500", marginLeft:10, width:100
     },
     price:{
-        marginLeft:20, fontSize:34, fontWeight:"700", width:90, color:"#11D5EB"
+        marginLeft:20, fontSize:34, fontWeight:"700", width:150, color:"#11D5EB"
     },
     press1:{
         width:85, height:30, backgroundColor:"#F5F5F5", borderRadius:20, justifyContent:"center", alignItems:"center"
@@ -241,13 +221,7 @@ const styles = StyleSheet.create({
         fontSize:18
     },
     color1:{
-        width:30, height:30, borderRadius:40, backgroundColor:"red", borderWidth:2, borderColor:"#A19999", marginLeft:25
-    },
-    color2:{
-        width:30, height:30, borderRadius:40, backgroundColor:"brown", borderWidth:2, borderColor:"#A19999", marginLeft:25
-    },
-    color3:{
-        width:30, height:30, borderRadius:40, backgroundColor:"yellow", borderWidth:2, borderColor:"#A19999", marginLeft:25
+        width:30, height:30, borderRadius:40, borderWidth:2, borderColor:"#A19999", marginLeft:25
     },
     Buttsize:{
         width:40, height:40,borderRadius:5, alignItems:"center", justifyContent:"center", borderWidth:1, borderColor:"#A19999", marginRight:5

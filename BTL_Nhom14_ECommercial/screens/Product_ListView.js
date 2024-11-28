@@ -17,6 +17,9 @@ import { categoryState } from "../atoms/CategoryAtoms";
 import { ProductFilterByCate } from "../atoms/ProductAtom";
 import Swiper_Cate from "../components/Swiper_Cate";
 import Footer from "../components/Footer";
+import { addToCart, getCart } from "../storage/cartStorage";
+import { cartQuantity, cartState } from "../atoms/CartAtom";
+
 
 export default function Product_ListView({ navigation }) {
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
@@ -24,6 +27,8 @@ export default function Product_ListView({ navigation }) {
 
   const [maxProduct, setMaxProduct] = useState(3);
   const [categoryDetail, setCategoryDetail] = useRecoilState(categoryState);
+  const cartQtt = useRecoilValue(cartQuantity)
+  const [, setCart]= useRecoilState(cartState)
 
   const dataProductFilter = useRecoilValue(ProductFilterByCate);
 
@@ -57,6 +62,14 @@ export default function Product_ListView({ navigation }) {
     return () => clearInterval(bannerInterval); // Dọn dẹp khi component unmount
   }, [translateX]);
 
+  useEffect(() => {
+    const fetchCartData = async () => {
+      const cartData = await getCart();  
+      setCart(cartData);
+    };
+
+    fetchCartData();  
+  }, []);  
   const dataBanner = [
     "https://www.sys-track.com/img/custom/mobileappDevlopment.png",
     "https://www.arnavsoftech.com/assets/img/android-apps.jpg",
@@ -81,7 +94,7 @@ export default function Product_ListView({ navigation }) {
         <Text style={styles.productPrice}>{item.price}$</Text>
       </View>
       <Pressable
-        onPress={() => navigation.navigate("Checkout_Cart")}
+        onPress={() =>{addToCart(item, setCart)}}
         style={styles.addToCartButton}
       >
         <FontAwesome name="plus-circle" size={30} color={"#09D1C7"} />
@@ -105,8 +118,9 @@ export default function Product_ListView({ navigation }) {
             <Text style={styles.headerType}>{categoryDetail.name}</Text>
           </View>
           <View style={styles.headerRight}>
-            <Pressable style={styles.headerButton}>
+            <Pressable style={styles.headerButton} onPress={()=>{navigation.navigate("Checkout_Cart")}}>
               <AntDesign name="shoppingcart" color={"grey"} size={30} />
+              <Text style={{position:'absolute',zIndex: 1, backgroundColor:'red', width: 20, height: 20, borderRadius: 10,marginLeft: 15, top: 0, color: 'white', textAlign:'center'}}>{cartQtt}</Text>
             </Pressable>
             <Pressable style={styles.headerButton}>
               <FontAwesome name="commenting-o" size={28} color={"grey"} />
