@@ -61,7 +61,7 @@ export default function Swiper_Cate({ navigation, confirm }) {
 
 const styles = StyleSheet.create({
   listCate: {
-    marginTop: 25,
+    marginTop: 10,
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "space-between",

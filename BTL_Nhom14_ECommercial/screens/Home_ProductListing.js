@@ -8,6 +8,7 @@ import Swiper_Cate from '../components/Swiper_Cate.js';
 import Footer from '../components/Footer.js';
 import { cartQuantity, cartState, cartStateFromStorage } from '../atoms/CartAtom.js';
 import { getCart } from '../storage/cartStorage.js';
+import YouTubePlayer from '../components/YoutubePlayer.js';
 
 export default function Home_ProductListing({ navigation }) {
   const listProduct = useRecoilValue(fetchAPIProduct);
@@ -60,8 +61,7 @@ export default function Home_ProductListing({ navigation }) {
         <View style={styles.container}>
           <View style={styles.header}>
             <View style={styles.headerLeft}>
-              <Image source={require('../images/back.png')} style={styles.backIcon} />
-              <Text style={styles.deal}>All Deals</Text>
+             <Image source={{uri:"https://i.imgur.com/ahAbser.png"}} style={{height: 50, width: 100}}/>
             </View>
 
             <View style={styles.headerRight}>
@@ -77,25 +77,11 @@ export default function Home_ProductListing({ navigation }) {
             <SearchBar />
           </View>
 
+          <Text style={{marginLeft:10, fontSize: 18, fontWeight:'bold', marginTop: 10}}>Categories</Text>
           <Swiper_Cate navigation={navigation} confirm={true} />
 
           <View style={styles.promotions}>
-            <View style={styles.promotionItem}>
-              <View style={styles.promotionText}>
-                <Text style={styles.promotionTitle}>Shoes</Text>
-                <Text style={styles.promotionDiscount}>50% off</Text>
-                <Pressable style={styles.promotionButton} onPress={""}>
-                  <Text style={styles.promotionButtonText}>Buy now</Text>
-                </Pressable>
-              </View>
-              <View style={styles.promotionImageContainer}>
-                <Image source={require('../images/shoe.png')} />
-              </View>
-            </View>
-            <View style={styles.promotionImages}>
-              <Image source={require('../images/img2.png')} style={styles.promotionImage} />
-              <Image source={require('../images/img3.png')} style={styles.promotionImage} />
-            </View>
+            <YouTubePlayer videoId={"GDlkCkcIqTs"} height={260} width={420} />
           </View>
 
           <View style={styles.recommendedHeader}>
@@ -107,14 +93,12 @@ export default function Home_ProductListing({ navigation }) {
 
           <View style={styles.productList}>
             <FlatList
-              data={listProduct}
-              keyExtractor={item => item.product_id}
+              data={listProduct.slice(0,10)}
+              keyExtractor={item => item._id}
               renderItem={renderItem}
               horizontal
             />
           </View>
-
-          
         </View>
        
       </ScrollView>
@@ -130,11 +114,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    marginBottom: 60,
-    height: 1000
+    height: 950
   },
   header: {
-    flex: 1,
+    marginTop: 10,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -164,20 +147,20 @@ const styles = StyleSheet.create({
     marginLeft: 10
   },
   searchContainer: {
-    flex: 1,
+    marginTop: 15,
+    marginBottom: 10,
     width: '95%',
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 12
   },
   promotions: {
-    flex: 6,
     justifyContent: 'center',
     alignItems: 'center'
   },
   promotionItem: {
     marginTop: 10,
-    flex: 3,
+    flex: 2,
     backgroundColor: '#F5F2FD',
     borderTopLeftRadius: 5,
     width: 300,
@@ -234,10 +217,10 @@ const styles = StyleSheet.create({
     height: 100, marginRight:10
   },
   recommendedHeader: {
-    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 5
+    marginTop: 30,
+    marginBottom: 10
   },
   recommendedText: {
     fontSize: 16,
@@ -251,7 +234,7 @@ const styles = StyleSheet.create({
     color: '#A19999'
   },
   productList: {
-    flex: 5
+    height: 250
   },
   footer: {
     flex: 2,

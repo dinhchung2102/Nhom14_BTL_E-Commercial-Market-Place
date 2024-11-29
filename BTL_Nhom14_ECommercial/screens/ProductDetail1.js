@@ -143,7 +143,7 @@ export default function ProductDetail1({ navigation }) {
               >
                 <Image
                   source={{ uri: productDetail.image }}
-                  style={{ width: 190, height: 180, borderRadius: 5 }}
+                  style={{ width: '100%', height: 300, borderRadius: 5, marginBottom: 10 }}
                 />
               </View>
               <View
