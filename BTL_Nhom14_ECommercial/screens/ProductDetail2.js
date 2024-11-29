@@ -1,11 +1,16 @@
 import React, { useState }  from 'react';
 import {Text, View, Pressable, Image, StyleSheet,ScrollView} from 'react-native';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from "recoil";
 import { ProductDetail } from '../atoms/ProductAtom';
+import { addToCart, getCart } from "../storage/cartStorage";
+import { cartQuantity, cartState } from "../atoms/CartAtom";
+
 
 export default function ProductDetail2({navigation}){
 
     const productDetail = useRecoilValue(ProductDetail);
+    const cartQtt= useRecoilValue(cartQuantity)
+    const [, setCart] = useRecoilState(cartState);
    
     //useState tăng giảm sô lượng 
     const [count, setCount] = useState(1);
@@ -37,7 +42,7 @@ export default function ProductDetail2({navigation}){
                             style={{marginLeft:10}}
                         />
                     </Pressable>
-                <Text style={styles.deal}>titkle</Text>
+                <Text style={styles.deal}>{productDetail.name}</Text>
                 </View>
                 <View style={{flex:5, alignItems:"center", justifyContent:"center"}}>
                         <Image
@@ -164,7 +169,13 @@ export default function ProductDetail2({navigation}){
                         />      
                     </Pressable>
                     <View style={{flex:2, alignItems:"center", justifyContent:"center"}}>
-                        <Pressable style={styles.butt}>
+                        <Pressable style={styles.butt} 
+                            onPress={() => {
+                                addToCart(productDetail, setCart); // Thêm sản phẩm vào giỏ hàng
+                                navigation.navigate('Checkout_Cart'); // Điều hướng tới màn hình giỏ hàng
+                              }}
+                              
+                        >
                             <Image
                                 source={require("../images/BCart.png")}
                                 style={{width:20,height:20, marginRight:4}}
@@ -184,7 +195,7 @@ export default function ProductDetail2({navigation}){
 
 const styles = StyleSheet.create({
     deal:{
-        fontSize:20, fontWeight:"500", marginLeft:10, width:100
+        fontSize:20, fontWeight:"500", marginLeft:10, width:300
     },
     price:{
         marginLeft:20, fontSize:34, fontWeight:"700", width:150, color:"#11D5EB"
