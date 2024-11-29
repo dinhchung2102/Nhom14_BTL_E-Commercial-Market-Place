@@ -14,7 +14,7 @@ import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import { useRecoilState, useRecoilValue } from "recoil";
 import SearchBar from "../components/SearchBar";
 import { categoryState } from "../atoms/CategoryAtoms";
-import { ProductFilterByCate } from "../atoms/ProductAtom";
+import { ProductDetail, ProductFilterByCate } from "../atoms/ProductAtom";
 import Swiper_Cate from "../components/Swiper_Cate";
 import Footer from "../components/Footer";
 import { addToCart, getCart } from "../storage/cartStorage";
@@ -29,6 +29,7 @@ export default function Product_ListView({ navigation }) {
   const [categoryDetail, setCategoryDetail] = useRecoilState(categoryState);
   const cartQtt = useRecoilValue(cartQuantity)
   const [, setCart]= useRecoilState(cartState)
+  const [, setProductDetail] = useRecoilState(ProductDetail)
 
   const dataProductFilter = useRecoilValue(ProductFilterByCate);
 
@@ -77,7 +78,9 @@ export default function Product_ListView({ navigation }) {
   ];
 
   const renderItemProduct = ({ item }) => (
-    <Pressable style={styles.productItem}>
+    <Pressable style={styles.productItem} onPress={()=>{
+      setProductDetail(item);
+      navigation.navigate("ProductDetail1")}}>
       <Image
         source={{ uri: item.image }}
         style={styles.productImage}

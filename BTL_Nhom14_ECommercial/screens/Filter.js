@@ -3,7 +3,7 @@ import {Text, View, Pressable, Image, FlatList, StyleSheet} from 'react-native';
  
 export default function Filter(){
     return(
-        <View style={{flex:1}}>
+        <View style={{flex:1, backgroundColor:'white'}}>
             <View style={{flex:1.5, alignItems:'center', flexDirection:"row", borderBottomWidth:1, borderColor:"#C5BCBC"}}>
                 <Text style={styles.header}>Filter</Text>
                 <Image

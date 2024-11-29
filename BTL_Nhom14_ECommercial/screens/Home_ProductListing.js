@@ -61,8 +61,7 @@ export default function Home_ProductListing({ navigation }) {
         <View style={styles.container}>
           <View style={styles.header}>
             <View style={styles.headerLeft}>
-              <Image source={require('../images/back.png')} style={styles.backIcon} />
-              <Text style={styles.deal}>All Deals</Text>
+             <Image source={{uri:"https://i.imgur.com/ahAbser.png"}} style={{height: 50, width: 100}}/>
             </View>
 
             <View style={styles.headerRight}>
@@ -94,8 +93,8 @@ export default function Home_ProductListing({ navigation }) {
 
           <View style={styles.productList}>
             <FlatList
-              data={listProduct}
-              keyExtractor={item => item.product_id}
+              data={listProduct.slice(0,10)}
+              keyExtractor={item => item._id}
               renderItem={renderItem}
               horizontal
             />
@@ -148,7 +147,7 @@ const styles = StyleSheet.create({
     marginLeft: 10
   },
   searchContainer: {
-    marginTop: 20,
+    marginTop: 15,
     marginBottom: 10,
     width: '95%',
     flexDirection: 'row',

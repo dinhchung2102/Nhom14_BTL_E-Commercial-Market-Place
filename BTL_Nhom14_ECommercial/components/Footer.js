@@ -23,7 +23,7 @@ export default function Footer() {
           <FontAwesome name='youtube-play' size={30} color={'#15919B'}/>
           <Text style={styles.textButton}>Video</Text>
         </Pressable>
-        <Pressable style={styles.button}>
+        <Pressable style={styles.button} onPress={()=>{ navigation.navigate("Account")}}>
           <FontAwesome name='user-circle-o' size={30} color={'#15919B'}/>
           <Text style={styles.textButton}>Account</Text>
         </Pressable>
