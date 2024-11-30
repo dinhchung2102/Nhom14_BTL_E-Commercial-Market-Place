@@ -4,16 +4,18 @@ import { ScrollView, StyleSheet, View, Text, Pressable, SafeAreaView } from 'rea
 import YouTubePlayer from '../components/YoutubePlayer';
 import Footer from '../components/Footer';
 import { AntDesign, FontAwesome } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 export const Video = () => {
   const videoId = 'GDlkCkcIqTs'; 
+  const navigation  = useNavigation();
   return (
 
     <SafeAreaView>
     <ScrollView contentContainerStyle={styles.container}>
       <View style={{width:'95%', flexDirection:'row', marginBottom: 30, justifyContent:'space-between'}}>
         <View>
-        <Pressable style={{flexDirection:'row', alignItems:'center'}}>
+        <Pressable style={{flexDirection:'row', alignItems:'center'}} onPress={()=>{navigation.goBack()}}>
         <FontAwesome name='angle-left' size={30}/>
         <Text style={{marginLeft: 10, fontSize: 18, fontWeight:'bold'}}>Back</Text>
       </Pressable>

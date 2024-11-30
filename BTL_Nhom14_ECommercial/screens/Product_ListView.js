@@ -80,7 +80,13 @@ export default function Product_ListView({ navigation }) {
   const renderItemProduct = ({ item }) => (
     <Pressable style={styles.productItem} onPress={()=>{
       setProductDetail(item);
-      navigation.navigate("ProductDetail1")}}>
+      if(item.size.length >0){
+        navigation.navigate("ProductDetail2")
+      }
+      else{
+        navigation.navigate("ProductDetail1")
+      }
+      }}>
       <Image
         source={{ uri: item.image }}
         style={styles.productImage}
@@ -113,7 +119,7 @@ export default function Product_ListView({ navigation }) {
             <Pressable
               style={styles.headerButton}
               onPress={() => {
-                navigation.navigate("Home_ProductListing");
+                navigation.goBack();
               }}
             >
               <AntDesign name="left" size={25} color={"grey"} />
@@ -149,7 +155,7 @@ export default function Product_ListView({ navigation }) {
         </View>
 
         <View style={styles.listProduct}>
-          {dataProductFilter.slice(0, maxProduct).map((item, index) => (
+          {dataProductFilter.map((item, index) => (
             <View key={item._id || index}>{renderItemProduct({ item })}</View>
           ))}
         </View>

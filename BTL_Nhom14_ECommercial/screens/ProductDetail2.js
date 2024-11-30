@@ -36,7 +36,7 @@ export default function ProductDetail2({navigation}){
                 <View style={{flex:1}}>
                 </View>
                 <View style={{flex:1, flexDirection: 'row', alignItems:'center'}}>
-                    <Pressable onPress={()=>navigation.navigate('Home_ProductListing')}>
+                    <Pressable onPress={()=>navigation.goBack()}>
                         <Image
                             source={require('../images/back.png')}
                             style={{marginLeft:10}}
@@ -44,10 +44,10 @@ export default function ProductDetail2({navigation}){
                     </Pressable>
                 <Text style={styles.deal}>{productDetail.name}</Text>
                 </View>
-                <View style={{flex:5, alignItems:"center", justifyContent:"center"}}>
+                <View style={{flex:6, alignItems:"center", justifyContent:"center"}}>
                         <Image
                             source={{uri:productDetail.image}}
-                            style={{width:320, height:180, borderRadius:6, backgroundColor:'red'}}
+                            style={{width:280, height:250, borderRadius:6,marginBottom: 20, backgroundColor:'white'}}
                         />
                 </View>
                 <View style={{flex:2, flexDirection:"row"}}>
