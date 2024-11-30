@@ -47,3 +47,18 @@ export const ProductFilterByCate = selector({
     return products.filter((item) => item.category_id === category._id);
   },
 });
+
+
+export const querySearchState = atom({
+  key:"querySearchState",
+  default:""
+})
+
+export const ProductFilterBySearchBar = selector({
+  key:"ProductFilterBySearchBar",
+  get:({get})=>{
+    const  keyWord = get(querySearchState);
+    const products = get(fetchAPIProduct);
+    return products.filter((item)=> item.name.toLowerCase().includes(keyWord.toLowerCase()))
+  }
+})

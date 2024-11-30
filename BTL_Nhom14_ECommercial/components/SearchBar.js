@@ -2,12 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { View, Pressable, TextInput , Text, Modal, StyleSheet} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { useRecoilState } from 'recoil';
+import { querySearchState } from '../atoms/ProductAtom';
 
 
 const SearchBar = () => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useRecoilState(querySearchState);
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
+
+
 
   return (
     <View style={{ flexDirection: 'row', alignItems:'center' }}>
@@ -24,6 +28,7 @@ const SearchBar = () => {
           value={searchQuery}
           onChangeText={setSearchQuery}
           returnKeyType="search" 
+          onSubmitEditing={()=>{navigation.navigate("Search_Products")}}
         />
       </View>
       <Pressable style={{ justifyContent: 'center' }} onPress={()=>{setModalVisible(false)}}>
