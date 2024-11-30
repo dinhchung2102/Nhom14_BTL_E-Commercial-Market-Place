@@ -10,7 +10,7 @@ export default function Swiper_Cate({ navigation, confirm }) {
 
   const handlePress = (item) => {
     if (confirm) {
-      navigation.replace("Product_ListView");
+      navigation.navigate("Product_ListView");
       setCategoryDetail(item);
     } else {
       setCategoryDetail(item);
