@@ -1,12 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Pressable, Alert, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { jwtDecode } from 'jwt-decode'
+import { useRecoilState } from 'recoil';
+import { accountIdState } from '../atoms/UserAtom';
 
 function Login({ navigation }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [, setAccountId] = useRecoilState(accountIdState)
+
+
+ 
 
   const handleLogin = async () => {
     if (!username || !password) {
@@ -27,11 +34,17 @@ function Login({ navigation }) {
       });
 
       const data = await response.json();
+      console.log(data);
+      
 
       if (response.ok) {
         await AsyncStorage.setItem('token', data.token);
 
+        const decodedToken = jwtDecode(data.token);
+        setAccountId(decodedToken.accountId)
+        
         navigation.navigate('Home_ProductListing');
+        
       } else {
         Alert.alert('Error', data.message || 'Failed to log in');
       }

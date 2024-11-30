@@ -6,6 +6,7 @@ import { fetchAPIProduct } from '../atoms/ProductAtom'
 import Footer from '../components/Footer'
 import { useNavigation } from '@react-navigation/native'
 import { cartQuantity } from '../atoms/CartAtom'
+import { fetchAccountById } from '../atoms/UserAtom'
 
 
 
@@ -26,6 +27,7 @@ export default function Account() {
     const listDataProduct = useRecoilValue(fetchAPIProduct)
     const navigation = useNavigation()
     const cartQtt = useRecoilValue(cartQuantity);
+    const userData = useRecoilValue(fetchAccountById);
   return (
     <SafeAreaView style={{backgroundColor:'#213A58'}}>
             
@@ -62,7 +64,7 @@ export default function Account() {
                     <Image source={{uri:"source"}} style={{width: 50, height:50, backgroundColor:'white', borderRadius: 25}}/>
                     <View>
                         <View  style={{flexDirection:'row', alignItems:'center', marginLeft: 10}}>
-                            <Text style={{fontSize: 22, fontWeight:'bold', color:"white"}}>UserName</Text>
+                            <Text style={{fontSize: 22, fontWeight:'bold', color:"white"}}>{userData.user.name}</Text>
                             <Pressable style={{flexDirection:'row',width: 60, justifyContent:'center', borderRadius: 15,backgroundColor:'yellow', alignItems:'center', marginLeft: 20}}>
                                 <Text style={{marginRight:5}}>Gold</Text>
                                 <FontAwesome name='angle-right'/>
