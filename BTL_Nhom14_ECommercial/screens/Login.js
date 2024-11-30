@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Pressable, Alert, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Pressable, Alert, StyleSheet, StatusBar } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { jwtDecode } from 'jwt-decode'
@@ -56,6 +56,11 @@ function Login({ navigation }) {
 
   return (
     <LinearGradient colors={['white', '#09D1C7', 'white']} style={styles.gradient}>
+      <StatusBar
+          animated={true}
+          backgroundColor="#ffffff"
+          hidden={true}
+        />
       <View style={styles.header}>
         <Text style={styles.title}>LOGIN</Text>
       </View>
@@ -107,7 +112,6 @@ const styles = StyleSheet.create({
   gradient: {
     flex: 1,
     padding: 20,
-    marginTop: 40,
   },
   header: {
     justifyContent: "center",

@@ -206,13 +206,12 @@ const styles = StyleSheet.create({
     marginBottom: 120,
   },
   header: {
-    position: "relative",
-    marginTop: 40,
-    height: 60,
+    height: 45,
     flexDirection: "row",
-    alignItems: "center",
     justifyContent: "space-between",
     backgroundColor: "white",
+    top:0
+
   },
   headerLeft: {
     flexDirection: "row",
