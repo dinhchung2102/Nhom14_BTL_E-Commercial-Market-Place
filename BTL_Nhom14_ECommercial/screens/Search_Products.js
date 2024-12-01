@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, SafeAreaView, ScrollView, StatusBar, Pressable, TextInput, Image } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { FontAwesome } from '@expo/vector-icons'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { fetchAPIProduct, ProductFilterBySearchBar, querySearchState } from '../atoms/ProductAtom'
@@ -10,6 +10,21 @@ export default function Search_Products() {
     const listDataProducts = useRecoilValue(fetchAPIProduct);
     const listFiltertest = useRecoilValue(ProductFilterBySearchBar)
     const [keyWordSearch, setKeyWordSearch]= useRecoilState(querySearchState)
+
+
+    const [isSorted, setIsSorted] = useState(false); 
+    const [sortedList, setSortedList] = useState([]);
+
+
+    const handleSortByRating = () => {
+        if (!isSorted) {
+          const sorted = [...listFiltertest].sort((a, b) => b.stars - a.stars);
+          setSortedList(sorted); 
+        } else {
+          setSortedList(listFiltertest);
+        }
+        setIsSorted(!isSorted);
+    };
     
     
     const renderItemProduct = ({item})=>{
@@ -92,7 +107,7 @@ export default function Search_Products() {
                     <Pressable style={{marginLeft: 10, height: 35, width: 100,alignItems:'center',justifyContent:'center', marginTop: 10, borderRadius: 10, backgroundColor:'#f0f0f0'}}>
                         <Text style={{textAlign:'center'}}>FreeShip</Text>
                     </Pressable>
-                    <Pressable style={{marginLeft: 10, height: 35, width: 100,alignItems:'center',justifyContent:'center', marginTop: 10, borderRadius: 10, backgroundColor:'#f0f0f0'}}>
+                    <Pressable onPress={handleSortByRating} style={{marginLeft: 10, height: 35, width: 100,alignItems:'center',justifyContent:'center', marginTop: 10, borderRadius: 10, backgroundColor: isSorted? 'cyan' : '#f0f0f0'}}>
                         <Text style={{textAlign:'center'}}>Rating</Text>
                     </Pressable>
                     <Pressable style={{marginLeft: 10, height: 35, width: 100,alignItems:'center',justifyContent:'center', marginTop: 10, borderRadius: 10, backgroundColor:'#f0f0f0'}}>
@@ -102,7 +117,7 @@ export default function Search_Products() {
 
 
                 <View style={{width:'100%',marginLeft: 10,marginBottom: 60, marginRight: 10,justifyContent:'space-between', backgroundColor:'#f0f0f0',flexDirection:'row', flexWrap:'wrap'}}>
-                    {listFiltertest.slice(0,10).map((item)=>(
+                    {sortedList.slice(0,10).map((item)=>(
                          <View key={item._id} style={{width:'44%',marginBottom: 8,marginLeft: 12,marginRight: 12, marginTop: 8, alignItems:"center", justifyContent:'center'}}>
                         {renderItemProduct({item})}
                         </View>
@@ -122,7 +137,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems:'center',
         backgroundColor:"#fff",
-        width:'100%'
+        width:'100%',
     },
     header:{
         width:'100%',

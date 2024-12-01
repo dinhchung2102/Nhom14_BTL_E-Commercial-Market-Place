@@ -39,11 +39,11 @@ function Login({ navigation }) {
 
       if (response.ok) {
         await AsyncStorage.setItem('token', data.token);
-
+        navigation.navigate('Home_ProductListing');
         const decodedToken = jwtDecode(data.token);
         setAccountId(decodedToken.accountId)
         
-        navigation.navigate('Home_ProductListing');
+        
         
       } else {
         Alert.alert('Error', data.message || 'Failed to log in');
