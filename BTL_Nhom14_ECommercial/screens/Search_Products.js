@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, SafeAreaView, ScrollView, StatusBar, Pressable, TextInput, Image } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FontAwesome } from '@expo/vector-icons'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { fetchAPIProduct, ProductFilterBySearchBar, querySearchState } from '../atoms/ProductAtom'
@@ -8,20 +8,17 @@ import { useNavigation } from '@react-navigation/native'
 
 export default function Search_Products() {
     const listDataProducts = useRecoilValue(fetchAPIProduct);
-    const listFiltertest = useRecoilValue(ProductFilterBySearchBar)
+    const [listFiltertest, setListFiltertest] = useRecoilState(ProductFilterBySearchBar)
     const [keyWordSearch, setKeyWordSearch]= useRecoilState(querySearchState)
-
-
     const [isSorted, setIsSorted] = useState(false); 
     const [isSortedByPrice, setIsSortedByPrice] = useState(false);
-
-    const [sortedList, setSortedList] = useState([...listDataProducts]);
-
-
-    const [modalRatingVisible, setModalRatingVisible] = useState(false);
+    const [sortedList, setSortedList] = useState([...listFiltertest]);
 
 
 
+    useEffect(() => {
+        setSortedList([...listFiltertest]); 
+    }, [listFiltertest]);
 
     const handleSortByRating = () => {
         if (!isSorted) {
