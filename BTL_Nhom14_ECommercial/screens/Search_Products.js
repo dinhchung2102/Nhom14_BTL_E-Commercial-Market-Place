@@ -13,7 +13,14 @@ export default function Search_Products() {
 
 
     const [isSorted, setIsSorted] = useState(false); 
-    const [sortedList, setSortedList] = useState([]);
+    const [isSortedByPrice, setIsSortedByPrice] = useState(false);
+
+    const [sortedList, setSortedList] = useState([...listDataProducts]);
+
+
+    const [modalRatingVisible, setModalRatingVisible] = useState(false);
+
+
 
 
     const handleSortByRating = () => {
@@ -25,7 +32,21 @@ export default function Search_Products() {
         }
         setIsSorted(!isSorted);
     };
-    
+
+    const handleSortByPrice = ()=>{
+        if(!isSortedByPrice){
+            const sorted = [...sortedList].sort((a,b)=> b.price - a.price);
+            setSortedList(sorted)
+            setIsSortedByPrice(!isSortedByPrice)
+        }
+        else{
+            const sorted = [...sortedList].sort((a,b)=> a.price - b.price);
+            setSortedList(sorted)
+            setIsSortedByPrice(!isSortedByPrice)
+        }
+    }
+
+
     
     const renderItemProduct = ({item})=>{
         return(
@@ -90,9 +111,9 @@ export default function Search_Products() {
                     <Pressable style={{alignItems:'center', justifyContent:'center', borderRightWidth: 1, flex: 1}}>
                         <Text>Top Sales</Text>
                     </Pressable>
-                    <Pressable style={{flexDirection:'row', alignItems:'center', justifyContent:'center', flex: 1}}>
-                        <Text style={{marginRight: 5}}>Price</Text>
-                        <FontAwesome name='level-down'/>
+                    <Pressable onPress={handleSortByPrice} style={{flexDirection:'row', alignItems:'center', justifyContent:'center', flex: 1}}>
+                        <Text style={{marginRight: 5, color: isSortedByPrice? "red" : "black"}}>Price</Text>
+                        <FontAwesome name={isSortedByPrice? "sort-down" : "sort-up"} size={15} color={isSortedByPrice? "red" : "black"}/>
                     </Pressable>
                 </View>
 
@@ -117,7 +138,7 @@ export default function Search_Products() {
 
 
                 <View style={{width:'100%',marginLeft: 10,marginBottom: 60, marginRight: 10,justifyContent:'space-between', backgroundColor:'#f0f0f0',flexDirection:'row', flexWrap:'wrap'}}>
-                    {sortedList.slice(0,10).map((item)=>(
+                    {sortedList.slice(0,20).map((item)=>(
                          <View key={item._id} style={{width:'44%',marginBottom: 8,marginLeft: 12,marginRight: 12, marginTop: 8, alignItems:"center", justifyContent:'center'}}>
                         {renderItemProduct({item})}
                         </View>
