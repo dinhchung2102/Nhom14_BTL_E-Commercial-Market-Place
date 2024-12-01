@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, ScrollView, StyleSheet, Pressable, Image, FlatList } from 'react-native'
+import { View, Text, SafeAreaView, ScrollView, StyleSheet, Pressable, Image, FlatList, StatusBar } from 'react-native'
 import React, { useState } from 'react'
 import { AntDesign, FontAwesome } from '@expo/vector-icons'
 import {useRecoilValue, useRecoilState} from 'recoil'
@@ -6,6 +6,9 @@ import { fetchAPIProduct } from '../atoms/ProductAtom'
 import Footer from '../components/Footer'
 import { useNavigation } from '@react-navigation/native'
 import { cartQuantity } from '../atoms/CartAtom'
+import { fetchAccountById } from '../atoms/UserAtom'
+
+
 
 
 
@@ -26,25 +29,39 @@ export default function Account() {
     const listDataProduct = useRecoilValue(fetchAPIProduct)
     const navigation = useNavigation()
     const cartQtt = useRecoilValue(cartQuantity);
+    const userData = useRecoilValue(fetchAccountById);
+    const [scrolling, setScrolling] = useState(false);
+    const handleScroll = (event) => {
+        // Kiểm tra vị trí cuộn, ví dụ nếu cuộn xuống 100px thì thay đổi màu thanh trạng thái
+        const offsetY = event.nativeEvent.contentOffset.y;
+        setScrolling(offsetY > 100); // Nếu cuộn xuống quá 100px, thay đổi trạng thái cuộn
+      };
+    
   return (
     <SafeAreaView style={{backgroundColor:'#213A58'}}>
-            
+            <StatusBar
+          animated={true}
+          hidden={false}
+          barStyle={scrolling ? 'dark-content' : 'light-content'}
+        backgroundColor={scrolling ? '#ffffff' : '#213A58'}
+        translucent={false}
+        />
 
                 <FlatList 
                     data={listDataProduct.slice(0,20)}
                     renderItem={renderItemProducts}
                     keyExtractor={item=>item._id}
                     numColumns={2}
-                    style={{backgroundColor:'#c4c4c4'}}
+                    style={{backgroundColor:'#f0f0f0'}}
                     ListHeaderComponent={
                         <View style={styles.container}>
 <View style={styles.header}>
-                    <Pressable style={{flexDirection:'row',marginTop: 20,height: 35, borderRadius: 20, width:130, justifyContent:'space-between', alignItems:'center', backgroundColor:'white'}}>
+                    <Pressable style={{flexDirection:'row',marginBottom: 25,height: 35, borderRadius: 20, width:130, justifyContent:'space-between', alignItems:'center', backgroundColor:'white'}}>
                         <FontAwesome name='home' size={25} style={{marginLeft:5}}/>
                         <Text style={{fontSize: 15, color:'black', fontWeight:"bold"}}>Start Selling</Text>
                         <FontAwesome name='angle-right' size={20} style={{marginRight: 5}} color={'black'}/>
                     </Pressable>
-                    <View style={{flexDirection:'row',marginTop: 20, alignItems:'center', justifyContent:'space-between', width:'100'}}>
+                    <View style={{flexDirection:'row',marginBottom: 25, alignItems:'center', justifyContent:'space-between', width:'100'}}>
                         <Pressable>
                             <FontAwesome name='gear' size={25} color={"white"}/>
                         </Pressable>
@@ -62,7 +79,7 @@ export default function Account() {
                     <Image source={{uri:"source"}} style={{width: 50, height:50, backgroundColor:'white', borderRadius: 25}}/>
                     <View>
                         <View  style={{flexDirection:'row', alignItems:'center', marginLeft: 10}}>
-                            <Text style={{fontSize: 22, fontWeight:'bold', color:"white"}}>UserName</Text>
+                            <Text style={{fontSize: 22, fontWeight:'bold', color:"white"}}>{userData.user.name}</Text>
                             <Pressable style={{flexDirection:'row',width: 60, justifyContent:'center', borderRadius: 15,backgroundColor:'yellow', alignItems:'center', marginLeft: 20}}>
                                 <Text style={{marginRight:5}}>Gold</Text>
                                 <FontAwesome name='angle-right'/>
@@ -79,7 +96,7 @@ export default function Account() {
 
 
                 <View style={{backgroundColor:'white', width:'100%', marginTop: 15}}>
-                    <View style={{width:"100%",flexDirection:'row',borderTopWidth: 10,borderTopColor:'#c4c4c4', alignItems:'center',justifyContent:'space-between'}}>
+                    <View style={{width:"100%",flexDirection:'row',borderTopWidth: 10,borderTopColor:'#f0f0f0', alignItems:'center',justifyContent:'space-between'}}>
                         <Text style={{marginLeft: 10,fontWeight:'bold', fontSize: 20}}>My Purchases</Text>
                         <Pressable style={{marginRight: 10, flexDirection:'row', alignItems:'center'}}>
                             <Text>View Purchase History</Text>
@@ -108,7 +125,7 @@ export default function Account() {
 
 
                 <View style={{backgroundColor:'white', width:'100%'}}>
-                    <View style={{width:"100%", borderTopWidth: 10, marginTop: 15, borderTopColor:'#c4c4c4', flexDirection:'row', alignItems:'center',justifyContent:'space-between'}}>
+                    <View style={{width:"100%", borderTopWidth: 10, marginTop: 15, borderTopColor:'#f0f0f0', flexDirection:'row', alignItems:'center',justifyContent:'space-between'}}>
                         <Text style={{fontSize: 20,fontWeight:'bold', marginLeft: 10, marginTop: 5}}>12.12 Black Friday</Text>
                     </View>
                     <View style={{width:'100%',marginTop: 15, flexDirection:'row', justifyContent:'space-between'}}>
@@ -139,7 +156,7 @@ export default function Account() {
                 </View>
 
                 <View style={{backgroundColor:'white', width:'100%'}}>
-                    <View style={{width:"100%", borderTopWidth: 10, marginTop: 15, borderTopColor:'#c4c4c4', flexDirection:'row', alignItems:'center',justifyContent:'space-between'}}>
+                    <View style={{width:"100%", borderTopWidth: 10, marginTop: 15, borderTopColor:'#f0f0f0', flexDirection:'row', alignItems:'center',justifyContent:'space-between'}}>
                         <Text style={{fontSize: 20,fontWeight:'bold', marginLeft: 10, marginTop: 5}}>My Wallet</Text>
                     </View>
                     <View style={{width:'100%',marginTop: 15,marginBottom: 10, flexDirection:'row', justifyContent:'space-between'}}>
@@ -170,21 +187,27 @@ export default function Account() {
                     </View>
                 </View>
 
-                <View style={{width:"100%", backgroundColor:'white' , borderTopColor:'#c4c4c4', borderTopWidth: 10}}>
+                <View style={{width:"100%", backgroundColor:'white' , borderTopColor:'#f0f0f0', borderTopWidth: 10}}>
                     <Text style={{marginLeft: 10, fontWeight:'bold', fontSize: 20}}>Support</Text>
-                    <View style={{width:"100%",flexDirection:'row', marginTop: 10,borderTopColor:'#c4c4c4', alignItems:'center'}}>
+                    <View style={{width:"100%",flexDirection:'row', marginTop: 10,borderTopColor:'#f0f0f0', alignItems:'center'}}>
                         <FontAwesome name='question-circle-o' size={25} style={{marginLeft: 10}}/>
                         <Text style={{marginLeft: 10, fontSize: 17}}>Help Center</Text>
                     </View>
-                    <View style={{width:"100%",flexDirection:'row',marginTop: 10,marginBottom: 10, borderTopColor:'#c4c4c4', alignItems:'center'}}>
+                    <View style={{width:"100%",flexDirection:'row',marginTop: 10,marginBottom: 10, borderTopColor:'#f0f0f0', alignItems:'center'}}>
                         <FontAwesome name='user-secret' size={25} style={{marginLeft: 10}}/>
                         <Text style={{marginLeft: 10, fontSize: 17}}>Chat with Ecommercial</Text>
                     </View>
                 </View>
-                <View style={{backgroundColor:'#c4c4c4', width: '100%', borderTopWidth: 10,  borderTopColor:"#c4c4c4"}}>
+                <View style={{backgroundColor:'white', width: '100%', borderTopWidth: 10,  borderTopColor:"#f0f0f0"}}>
                      </View>
                       </View>
                     }
+
+                    onScroll={handleScroll}
+                    scrollEventThrottle={5}
+
+
+
                     />  
                
         <Footer/>
@@ -200,7 +223,7 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         justifyContent:'space-between',
         backgroundColor:'#213A58',
-        height: 95,
+        height: 60,
         alignItems:'center',
         marginLeft: 10,
         marginRight: 10

@@ -16,6 +16,7 @@ import Login from "./screens/Login";
 import Register from "./screens/Register";
 import { Video } from "./screens/Video";
 import Account from "./screens/Account";
+import Search_Products from "./screens/Search_Products";
 
 
 export default function App() {
@@ -43,6 +44,7 @@ export default function App() {
           <Stack.Screen name="Register" component={Register}/>
           <Stack.Screen name="Video" component={Video}/>
           <Stack.Screen name="Account" component={Account}/>
+          <Stack.Screen name="Search_Products" component={Search_Products}/>
         </Stack.Navigator>
       </NavigationContainer>
     </RecoilRoot>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, Pressable, Image, FlatList, StyleSheet, ScrollView, TextInput, SafeAreaView } from 'react-native';
+import { Text, View, Pressable, Image, FlatList, StyleSheet, ScrollView, TextInput, SafeAreaView, StatusBar } from 'react-native';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { fetchAPIProduct, ProductDetail } from '../atoms/ProductAtom';
 import { AntDesign, FontAwesome } from '@expo/vector-icons';
@@ -56,7 +56,14 @@ export default function Home_ProductListing({ navigation }) {
   );
 
   return (
+    
     <SafeAreaView style={styles.safeArea}>
+       <StatusBar
+          animated={true}
+          backgroundColor="white"
+          barStyle={'dark-content'}
+          hidden={false}
+        />
       <ScrollView>
         <View style={styles.container}>
           <View style={styles.header}>
@@ -108,16 +115,12 @@ export default function Home_ProductListing({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    marginTop: 40
-  },
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
     height: 950
   },
   header: {
-    marginTop: 10,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

@@ -101,7 +101,7 @@ export default function ProductDetail1({ navigation }) {
   };
   return (
       
-        <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFFFF", marginTop: 40 }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFFFF"}}>
             <ScrollView style={{marginBottom: 125}}>
           <View
             style={{

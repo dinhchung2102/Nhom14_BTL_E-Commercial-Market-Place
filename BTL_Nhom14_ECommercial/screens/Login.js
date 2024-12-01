@@ -1,12 +1,19 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Pressable, Alert, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, Pressable, Alert, StyleSheet, StatusBar } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { jwtDecode } from 'jwt-decode'
+import { useRecoilState } from 'recoil';
+import { accountIdState } from '../atoms/UserAtom';
 
 function Login({ navigation }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [, setAccountId] = useRecoilState(accountIdState)
+
+
+ 
 
   const handleLogin = async () => {
     if (!username || !password) {
@@ -27,11 +34,17 @@ function Login({ navigation }) {
       });
 
       const data = await response.json();
+      console.log(data);
+      
 
       if (response.ok) {
         await AsyncStorage.setItem('token', data.token);
-
         navigation.navigate('Home_ProductListing');
+        const decodedToken = jwtDecode(data.token);
+        setAccountId(decodedToken.accountId)
+        
+        
+        
       } else {
         Alert.alert('Error', data.message || 'Failed to log in');
       }
@@ -43,6 +56,11 @@ function Login({ navigation }) {
 
   return (
     <LinearGradient colors={['white', '#09D1C7', 'white']} style={styles.gradient}>
+      <StatusBar
+          animated={true}
+          backgroundColor="#ffffff"
+          hidden={true}
+        />
       <View style={styles.header}>
         <Text style={styles.title}>LOGIN</Text>
       </View>
@@ -94,7 +112,6 @@ const styles = StyleSheet.create({
   gradient: {
     flex: 1,
     padding: 20,
-    marginTop: 40,
   },
   header: {
     justifyContent: "center",
