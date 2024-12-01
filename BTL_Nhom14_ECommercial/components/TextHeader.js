@@ -8,7 +8,6 @@ export default class TextHeader extends Component {
     return (
         <View style={{
             width: "95%",
-            marginTop: 35,
             marginBottom: 10,
             alignItems: "center",
             flexDirection: "row",
