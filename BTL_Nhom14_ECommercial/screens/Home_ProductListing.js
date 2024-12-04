@@ -93,7 +93,7 @@ export default function Home_ProductListing({ navigation }) {
 
           <View style={styles.recommendedHeader}>
             <Text style={styles.recommendedText}>Recommended for you</Text>
-            <Pressable onPress={() => navigation.navigate('Products')}>
+            <Pressable onPress={() => navigation.navigate('Search_Products')}>
               <Text style={styles.viewAllText}>View all</Text>
             </Pressable>
           </View>

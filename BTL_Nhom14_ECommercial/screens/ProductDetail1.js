@@ -114,7 +114,7 @@ export default function ProductDetail1({ navigation }) {
           >
             <View style={{ flexDirection: "row", alignItems: "center"}}>
               <Pressable
-                onPress={() => navigation.replace("Home_ProductListing")}
+                onPress={() => navigation.goBack()}
               >
                 <FontAwesome name="angle-left" size={22} style={{marginLeft: 10}}/>
               </Pressable>

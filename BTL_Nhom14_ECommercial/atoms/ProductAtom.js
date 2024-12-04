@@ -62,3 +62,8 @@ export const ProductFilterBySearchBar = selector({
     return products.filter((item)=> item.name.toLowerCase().includes(keyWord.toLowerCase()))
   }
 })
+
+export const ProductFilterByPrice = atom({
+  key:"ProductFilterByPrice",
+  default:[]
+})

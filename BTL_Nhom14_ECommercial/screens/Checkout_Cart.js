@@ -8,6 +8,7 @@ import {
   TextInput,
   ScrollView,
   SafeAreaView,
+  StatusBar,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
@@ -98,6 +99,13 @@ export default function Checkout_Cart({ navigation }) {
 
     return (
       <View style={styles.cartItemContainer}>
+        <StatusBar
+          animated={true}
+          hidden={false}
+          barStyle={'dark-content'}
+          translucent={false}
+          backgroundColor={'white'}
+        />
         <View style={styles.cartItemHeader}>
           <Pressable style={styles.shopNamePressable}>
             <Text style={styles.shopNameText}>Shop Name</Text>
