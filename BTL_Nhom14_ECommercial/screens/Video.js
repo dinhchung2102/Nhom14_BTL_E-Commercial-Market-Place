@@ -5,10 +5,13 @@ import YouTubePlayer from '../components/YoutubePlayer';
 import Footer from '../components/Footer';
 import { AntDesign, FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { useRecoilValue } from 'recoil';
+import { cartQuantity } from '../atoms/CartAtom';
 
 export const Video = () => {
   const videoId = 'GDlkCkcIqTs'; 
   const navigation  = useNavigation();
+  const cartQtt = useRecoilValue(cartQuantity);
   return (
 
     <SafeAreaView>
@@ -21,7 +24,8 @@ export const Video = () => {
       </Pressable>
         </View>
       <View style={{flexDirection:"row", alignItems:"center"}}>
-        <Pressable>
+        <Pressable onPress={()=>{navigation.navigate("Checkout_Cart")}}>
+        <Text style={{position:'absolute',zIndex: 1, backgroundColor:'red', width: 20, height: 20, borderRadius: 10,marginLeft: 15, top: 0, color: 'white', textAlign:'center'}}>{cartQtt}</Text>
           <AntDesign name='shoppingcart' size={28}/>
         </Pressable>
         <Pressable style={{alignItems:'center', justifyContent:'center', marginLeft: 10}}>

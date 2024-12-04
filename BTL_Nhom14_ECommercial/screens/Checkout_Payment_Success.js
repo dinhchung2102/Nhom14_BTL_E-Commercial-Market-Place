@@ -23,16 +23,16 @@ export default Checkout_Payment_Success = ({navigation}) => {
           <View style={styles.header}>
             <FontAwesome name="check-circle" size={100} color={"green"} />
             <Text style={styles.headerText}>Order Placed Successfully</Text>
-            <Text style={{fontSize: 18, color:'grey'}}>Text test i love u so much, please hold on</Text>
+           
           </View>
 
           <View style={styles.content}>
-            <TextPayment text = "SubTotal" price = {totalMoney} />
-            <TextPayment text = "Tax (10%)" price = {totalMoney*0.1} />
+            <TextPayment text = "SubTotal" price = {(totalMoney+99-28.7-25.2)} />
+            <TextPayment text = "Tax (10%)" price = {(totalMoney+99-28.7-25.2)*0.1} />
             <TextPayment text = 'Fee' price = {0}/>
             <TextCardPayment text = "Card" cardNumber = '123456789'/>
             <View style={{flexDirection:'row', alignItems:'center', width:"90%"}}>
-            <TextPayment text = 'Total' price = {totalMoney+totalMoney*0.1+ 0}/>
+            <TextPayment text = 'Total' price = {(totalMoney+99-28.7-25.2)+(totalMoney+99-28.7-25.2)*0.1+ 0}/>
             <FontAwesome name="check-circle" color={'green'} size={20} style={{marginLeft: 10, flex: 1}}/>
             </View>
             
@@ -48,7 +48,7 @@ export default Checkout_Payment_Success = ({navigation}) => {
               <FontAwesome name="star" color={"#FFD700"} size={30} />
             </View>
 
-            <Pressable style={styles.button} onPress={() =>{navigation.navigate("Product_ListView")}}>
+            <Pressable style={styles.button} onPress={() =>{navigation.navigate("Home_ProductListing")}}>
               <FontAwesome name="home" color={'white'} size={30}/>
               <Text style={styles.textButton}>BACK TO HOME</Text>
             </Pressable>

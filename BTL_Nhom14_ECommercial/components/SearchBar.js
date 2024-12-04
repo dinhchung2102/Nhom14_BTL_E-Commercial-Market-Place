@@ -31,8 +31,8 @@ const SearchBar = () => {
           onSubmitEditing={()=>{navigation.navigate("Search_Products")}}
         />
       </View>
-      <Pressable style={{ justifyContent: 'center' }} onPress={()=>{setModalVisible(false)}}>
-        <FontAwesome name="list-ul" size={27} color={'grey'} />
+      <Pressable style={{ justifyContent: 'center' }} onPress={()=>{navigation.navigate("Filter")}}>
+        <FontAwesome name="filter" size={40} color={'#09D1C7'} />
       </Pressable>
     </View>
   );

@@ -2,22 +2,27 @@ import { View, Text, StyleSheet, SafeAreaView, ScrollView, StatusBar, Pressable,
 import React, { useEffect, useState } from 'react'
 import { FontAwesome } from '@expo/vector-icons'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { fetchAPIProduct, ProductFilterBySearchBar, querySearchState } from '../atoms/ProductAtom'
+import { fetchAPIProduct, ProductDetail, ProductFilterByPrice, ProductFilterBySearchBar, querySearchState } from '../atoms/ProductAtom'
 import Footer from '../components/Footer'
 import { useNavigation } from '@react-navigation/native'
 
 export default function Search_Products() {
-    const listDataProducts = useRecoilValue(fetchAPIProduct);
     const [listFiltertest, setListFiltertest] = useRecoilState(ProductFilterBySearchBar)
     const [keyWordSearch, setKeyWordSearch]= useRecoilState(querySearchState)
     const [isSorted, setIsSorted] = useState(false); 
     const [isSortedByPrice, setIsSortedByPrice] = useState(false);
     const [sortedList, setSortedList] = useState([...listFiltertest]);
-
+    const [filterPrice, setFilterPrice] = useRecoilState(ProductFilterByPrice)
+    const [productDetail, setProductDetail] = useRecoilState(ProductDetail)
 
 
     useEffect(() => {
-        setSortedList([...listFiltertest]); 
+        if(filterPrice.length > 0){
+            setSortedList([...filterPrice]);
+        }
+        else{
+            setSortedList([...listFiltertest]); 
+        }
     }, [listFiltertest]);
 
     const handleSortByRating = () => {
@@ -42,12 +47,24 @@ export default function Search_Products() {
             setIsSortedByPrice(!isSortedByPrice)
         }
     }
+    const handleProductDetail = (item) =>{
+        if(item.color.length > 0 ){
+            setProductDetail(item);
+            navigation.navigate("ProductDetail2");
+        }
+        else{
+            setProductDetail(item);
+            navigation.navigate("ProductDetail1");
+        }
+    }
 
 
     
     const renderItemProduct = ({item})=>{
         return(
-        <View style={{backgroundColor:'white',height: 270, width:"100%", borderRadius: 15, alignItems:'center'}}>
+        <Pressable 
+        onPress={()=>{handleProductDetail(item)}}
+        style={{backgroundColor:'white',height: 270, width:"100%", borderRadius: 15, alignItems:'center'}}>
             <Image source={{uri:item.image}} style={{height: 150, width: 180, marginTop: 10}}/>
             <Text numberOfLines={1} style={{width:'95%', fontSize: 17}}>{item.name}</Text>
             <Text style={{width:'95%', fontSize: 18, color:'red', fontWeight:'bold'}}>${item.price}</Text>
@@ -62,7 +79,7 @@ export default function Search_Products() {
                 <FontAwesome name='location-arrow' style={{marginRight: 20}}/>
                 <Text>Ho Chi Minh City</Text>
             </View>
-        </View>
+        </Pressable>
         )
     }
     const navigation = useNavigation()
@@ -91,7 +108,7 @@ export default function Search_Products() {
                             onChangeText={setKeyWordSearch}
                         />
                     </View>
-                    <Pressable style={{marginLeft: 10, marginRight: 10, flexDirection:'row', alignItems:'center'}}>
+                    <Pressable onPress={()=>{navigation.navigate("Filter")}} style={{marginLeft: 10, marginRight: 10, flexDirection:'row', alignItems:'center'}}>
                         <FontAwesome name='filter' size={30}/>
                         <Text style={{marginLeft: 5}}>Filter</Text>
                     </Pressable>

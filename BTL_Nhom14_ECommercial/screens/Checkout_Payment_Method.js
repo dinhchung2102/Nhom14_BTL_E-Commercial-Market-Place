@@ -6,6 +6,7 @@ import {
   ScrollView,
   Pressable,
   Image,
+  StatusBar,
 } from "react-native";
 import React, { useState } from "react";
 import { FontAwesome } from "@expo/vector-icons";
@@ -47,7 +48,6 @@ export default function Checkout_Payment_Method({navigation}) {
     <SafeAreaView>
       <ScrollView>
         <View style={styles.container}>
-
             <View style={{backgroundColor:'white', width:'100%', alignItems:'center'}}>
               <TextHeader textHeader="Payment" onPress = {() =>{navigation.navigate("Feedback")}}/>
             </View>
@@ -90,7 +90,7 @@ export default function Checkout_Payment_Method({navigation}) {
                   Payment Method
                 </Text>
                 {paymentMethod.map((item)=>(
-                  <View style={{width:'100%', marginTop: 10}}>
+                  <View key={item._id} style={{width:'100%', marginTop: 10}}>
                     <Pressable style={{width:'100%', alignItems:'center', justifyContent:'center', height: 30, borderWidth:1, borderColor:'#c4c4c4'}}>
                       <Text style={{textAlign:'center'}}>{item.name}</Text>
                     </Pressable>
@@ -123,13 +123,13 @@ export default function Checkout_Payment_Method({navigation}) {
                 </View>
                 <View style={{flexDirection:'row', justifyContent:'space-between', marginTop: 5}}>
                     <Text>Total Payment</Text>
-                    <Text style={{fontWeight:'bold'}}>${totalMoney+99-28.7-25.2}</Text>
+                    <Text style={{fontWeight:'bold'}}>${(totalMoney+99-28.7-25.2).toFixed(2)}</Text>
                 </View>
               </View>
             </View>
 
             
-            <View style={{width:'97%', backgroundColor:'#f0f0f0', alignItems:'center', marginTop: 15}}>
+            <View style={{width:'97%',marginBottom:100, backgroundColor:'#f0f0f0', alignItems:'center', marginTop: 15}}>
               <Text>By clicking "Place Order", you are agreeing to Ecommercial's General Transaction Terms</Text>
             </View>
             
@@ -148,7 +148,7 @@ export default function Checkout_Payment_Method({navigation}) {
         borderTopWidth: 0.5}}>
         <View style={{flexDirection:'row', alignItems:'center'}}>
           <Text style={{marginRight: 10}}>Total</Text>
-          <Text style={{fontSize: 20, fontWeight:'bold', color:'red'}}>${totalMoney+99-28.7-25.2}</Text>
+          <Text style={{fontSize: 20, fontWeight:'bold', color:'red'}}>${(totalMoney+99-28.7-25.2).toFixed(2)}</Text>
         </View>
        
        <Pressable onPress={()=>{navigation.navigate("Checkout_Payment_Success")}} style={{alignItems:'center', justifyContent:'center',borderRadius: 10,height: 50,width: 130, backgroundColor:'#213A58'}}>
